@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { AppBar, Toolbar, Typography, Button } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
+import { appBarStyle, titleStyle, buttonStyle } from './navbarStyles';
 
 const ChefNavbar = () => {
   const { logout } = useContext(UserContext);
@@ -10,17 +11,19 @@ const ChefNavbar = () => {
   const handleLogout = () => {
     logout();
     localStorage.clear();
-    navigate('/login');
+    navigate('/');
   };
 
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>Chef Dashboard</Typography>
-        <Button color="inherit" component={Link} to="/chef/dashboard">Dashboard</Button>
-        <Button color="inherit" component={Link} to="/chef/my-recipes">My Recipes</Button>
-        <Button color="inherit" component={Link} to="/chef/schedule">Schedule</Button>
-        <Button color="inherit" onClick={handleLogout}>Logout</Button>
+    <AppBar position="static" sx={appBarStyle}>
+      <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Typography variant="h6" component={Link} to="/" sx={titleStyle}>Chef Dashboard</Typography>
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Button component={Link} to="/chef/dashboard" sx={buttonStyle}>Dashboard</Button>
+          <Button component={Link} to="/chef/my-recipes" sx={buttonStyle}>My Recipes</Button>
+          <Button component={Link} to="/chef/schedule" sx={buttonStyle}>Schedule</Button>
+          <Button onClick={handleLogout} sx={buttonStyle}>Logout</Button>
+        </Box>
       </Toolbar>
     </AppBar>
   );

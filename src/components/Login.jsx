@@ -55,7 +55,9 @@ const Login = () => {
         <Typography variant="h5" align="center" gutterBottom>Login</Typography>
         <TextField fullWidth margin="normal" name="email" label="Email" onChange={handleChange} />
         <TextField fullWidth margin="normal" name="password" label="Password" type="password" onChange={handleChange} />
-        <Button fullWidth variant="contained" onClick={handleSubmit}>Login</Button>
+        <Button sx={{ marginTop: 2}} fullWidth variant="contained" onClick={handleSubmit}>Login</Button>
+        <Button sx={{ marginTop: 2}} fullWidth variant="outlined" color="secondary" onClick={() => navigate('/signup')}>Don't have an account? Regiter</Button>
+
       </Paper>
     </Box>
   );

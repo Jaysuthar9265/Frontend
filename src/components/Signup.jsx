@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import {TextField, Button, MenuItem, Typography, Box, Paper} from '@mui/material';
 import API from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 const roles = ['admin', 'client', 'chef', 'vendor'];
 
 const Signup = () => {
+
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     name: '', email: '', password: '', role: ''
   });
@@ -56,6 +60,8 @@ const Signup = () => {
           </TextField>
 
         <Button fullWidth variant="contained" onClick={handleSubmit}>Sign Up</Button>
+        <Button sx={{ marginTop: 2}} fullWidth variant="outlined" color="secondary" onClick={() => navigate('/login')}>Already have an account? Login</Button>
+        
         </Paper>
       </Box>
     

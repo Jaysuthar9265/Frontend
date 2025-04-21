@@ -1,7 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import RecipesPage from './pages/RecipesPage';
+
 import Login from './components/Login';
 import Signup from './components/Signup';
 import UserLayout from './layouts/UserLayout';
@@ -28,6 +27,15 @@ import MyRecipes from './pages/chef/MyRecipes';
 import EditRecipe from './pages/chef/EditRecipe';
 
 
+
+//Visitor Pages
+
+
+import VisitorRecipes from './pages/visitor/VisitorRecipes';
+import VisitorHome from './pages/visitor/VisitorHome';
+import About from './pages/About';
+
+
 const App = () => {
   return (
     <Routes>
@@ -38,8 +46,9 @@ const App = () => {
 
       {/* Default User Pages */}
 
-      <Route path="/" element={<UserLayout><HomePage /></UserLayout>}/>
-      <Route path="/recipes" element={<UserLayout><RecipesPage /></UserLayout>}/>
+      <Route path="/" element={<UserLayout><VisitorHome /></UserLayout>}/>
+      <Route path="/recipes" element={<UserLayout><VisitorRecipes /></UserLayout>}/>
+      <Route path="/about" element={<UserLayout><About /></UserLayout>} />
 
       {/* Role-Based Dashboards */}
 
@@ -53,8 +62,7 @@ const App = () => {
  
       <Route path="/client/dashboard" element={<PrivateRoute allowedRoles={['client']}><UserLayout><ClientDashboard /></UserLayout></PrivateRoute>}/>
       <Route path="/client/recipes" element={<PrivateRoute allowedRoles={['client']}><UserLayout><ClientRecipes /></UserLayout></PrivateRoute>} />
-      
-      
+
 
         {/* Chef */}
 
