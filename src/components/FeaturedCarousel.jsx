@@ -1,6 +1,7 @@
 // FeaturedCarousel.jsx
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { Box } from '@mui/material';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -13,26 +14,32 @@ const featuredImages = [
 
 const FeaturedCarousel = () => {
   return (
-    <Swiper
-      modules={[Navigation, Pagination, Autoplay]}
-      spaceBetween={30}
-      slidesPerView={1}
-      navigation
-      pagination={{ clickable: true }}
-      autoplay={{ delay: 3000 }}
-      loop={true}
-    >
-      {featuredImages.map((url, index) => (
-        <SwiperSlide key={index}>
-          <img
-            src={url}
-            alt={`Slide ${index}`}
-            style={{ width: '100%', height: '350px', objectFit: 'cover', borderRadius: '20px' }}
-          />
-        </SwiperSlide>
-      ))}
-    </Swiper>
+    <Box sx={{ position: 'relative', zIndex: 2 }}>
+      <Swiper
+        modules={[ Autoplay]}
+        spaceBetween={0}
+        slidesPerView={1}
+        autoplay={{ delay: 3000 }}
+        loop={true}
+      >
+        {featuredImages.map((url, index) => (
+          <SwiperSlide key={index}>
+            <img
+              src={url}
+              alt={`Slide ${index}`}
+              style={{
+                width: '100%',
+                height: '350px',
+                objectFit: 'cover',
+                borderRadius: '20px',
+              }}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </Box>
   );
 };
+
 
 export default FeaturedCarousel;

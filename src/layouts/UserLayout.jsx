@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import AdminLayout from './AdminLayout';
-import ClientNavbar from '../components/navbars/ClientNavbar';
 import ChefNavbar from '../components/navbars/ChefNavbar';
 import VendorNavbar from '../components/navbars/VendorNavbar';
 import VisitorNavbar from '../components/navbars/VisitorNavbar';
+import ClientLayout from './ClientLayout';
 
 const UserLayout = ({ children }) => {
   const { user } = useContext(UserContext); // or get from localStorage
@@ -14,7 +14,7 @@ const UserLayout = ({ children }) => {
       case 'admin':
         return <AdminLayout />;
       case 'client':
-        return <ClientNavbar />;
+        return <ClientLayout />;
       case 'chef':
         return <ChefNavbar />;
       case 'vendor':

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
-import { appBarStyle, titleStyle, buttonStyle } from './navbarStyles';
+import { appBarStyle, titleStyle, buttonStyle, buttonStyle1 } from './navbarStyles';
 
 const ClientNavbar = () => {
   const { logout } = useContext(UserContext);
@@ -23,7 +23,7 @@ const ClientNavbar = () => {
           <Button component={Link} to="/client/recipes" sx={buttonStyle}>Recipes</Button>
           <Button component={Link} to="/client/orders" sx={buttonStyle}>My Orders</Button>
           <Button component={Link} to="/about" sx={buttonStyle}>About</Button>
-          <Button onClick={handleLogout} sx={buttonStyle}>Logout</Button>
+          <Button onClick={handleLogout} sx={buttonStyle1}>Logout</Button>
         </Box>
       </Toolbar>
     </AppBar>

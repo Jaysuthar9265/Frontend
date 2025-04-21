@@ -1,6 +1,5 @@
-import { BorderAllRounded, Height, Padding } from "@mui/icons-material";
+import { BorderBottom, BorderBottomOutlined, Scale } from "@mui/icons-material";
 
-// src/styles/navbarStyles.js
 export const appBarStyle = {
     backgroundColor: '#2c3e50',
     color: '#333',
@@ -16,7 +15,8 @@ export const appBarStyle = {
   
   export const buttonStyle = {
     color: '#fff',
-    margin:-1.2,
+    marginLeft:-1,
+    marginRight:-1,
     borderRadius:2,
     fontWeight: 600,
     width:100,
@@ -31,4 +31,16 @@ export const adminAppBarStyle = {
     color: 'white',
   };
   
-  
+  export const buttonStyle1 = {
+    color: '#fff',
+    margin:0,
+    border:2,
+    borderRadius:2,
+    fontWeight: 600,
+    width:80,
+    textTransform: 'none',
+    '&:hover': {
+      backgroundColor: '#f5f5f5',
+      color: '#2c3e50',
+    },
+  };

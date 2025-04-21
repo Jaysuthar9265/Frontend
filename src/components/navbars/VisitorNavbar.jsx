@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { appBarStyle, titleStyle, buttonStyle } from './navbarStyles';
+import { appBarStyle, titleStyle, buttonStyle, buttonStyle1 } from './navbarStyles';
 
 const VisitorNavbar = () => {
   return (
@@ -20,8 +20,8 @@ const VisitorNavbar = () => {
           <Button component={Link} to="/" sx={buttonStyle}>Home</Button>
           <Button component={Link} to="/recipes" sx={buttonStyle}>Recipes</Button>
           <Button component={Link} to="/about" sx={buttonStyle}>About</Button>
-          <Button component={Link} to="/login" sx={buttonStyle}>Login</Button>
-          <Button component={Link} to="/signup" sx={buttonStyle}>Register</Button>
+          <Button component={Link} to="/login" sx={buttonStyle1}>Login</Button>
+          <Button component={Link} to="/signup" sx={buttonStyle1}>Register</Button>
         </Box>
       </Toolbar>
     </AppBar>

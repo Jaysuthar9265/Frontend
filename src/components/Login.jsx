@@ -3,6 +3,9 @@ import { TextField, Button, Typography, Box, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import API from '../services/api';
 import { UserContext } from '../context/UserContext';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -52,7 +55,13 @@ const Login = () => {
       }}
     >
       <Paper elevation={6} sx={{ padding: 4, width: 400, backdropFilter: 'blur(5px)' }}>
+      <Box sx={{margin:-3, display: 'flex', justifyContent: 'flex-end' }}>
+        <IconButton onClick={() => navigate('/')}>
+          <CloseIcon />
+        </IconButton>
+      </Box>
         <Typography variant="h5" align="center" gutterBottom>Login</Typography>
+
         <TextField fullWidth margin="normal" name="email" label="Email" onChange={handleChange} />
         <TextField fullWidth margin="normal" name="password" label="Password" type="password" onChange={handleChange} />
         <Button sx={{ marginTop: 2}} fullWidth variant="contained" onClick={handleSubmit}>Login</Button>

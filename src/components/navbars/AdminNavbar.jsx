@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
-import { adminAppBarStyle, titleStyle, buttonStyle } from './navbarStyles';
+import { adminAppBarStyle, titleStyle, buttonStyle, buttonStyle1 } from './navbarStyles';
 
 const AdminNavbar = () => {
   const { logout } = useContext(UserContext);
@@ -22,7 +22,7 @@ const AdminNavbar = () => {
           <Button component={Link} to="/admin/dashboard" sx={buttonStyle}>Dashboard</Button>
           <Button component={Link} to="/admin/users" sx={buttonStyle}>Users</Button>
           <Button component={Link} to="/admin/add-admin" sx={buttonStyle}>Add Admin</Button>
-          <Button onClick={handleLogout} sx={buttonStyle}>Logout</Button>
+          <Button onClick={handleLogout} sx={buttonStyle1}>Logout</Button>
         </Box>
       </Toolbar>
     </AppBar>

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import {TextField, Button, MenuItem, Typography, Box, Paper} from '@mui/material';
 import API from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 const roles = ['admin', 'client', 'chef', 'vendor'];
 
@@ -39,6 +41,11 @@ const Signup = () => {
         justifyContent: 'center',
       }}>
         <Paper elevation={6} sx={{ padding: 4, width: 400, backdropFilter: 'blur(5px)' }}>
+        <Box sx={{margin:-3, display: 'flex', justifyContent: 'flex-end' }}>
+        <IconButton onClick={() => navigate('/')}>
+          <CloseIcon />
+        </IconButton>
+        </Box>
         <Typography variant="h5" align="center" gutterBottom>Signup</Typography>
         <TextField fullWidth margin="normal" name="name" label="Name" onChange={handleChange} />
         <TextField fullWidth margin="normal" name="email" label="Email" onChange={handleChange} />
