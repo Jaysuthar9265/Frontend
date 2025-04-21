@@ -17,6 +17,7 @@ import {
   Box,
 } from '@mui/material';
 import axios from 'axios';
+import Footer from '../../components/footer/Footer';
 
 const VisitorRecipes = () => {
   const [recipes, setRecipes] = useState([]);
@@ -48,8 +49,10 @@ const VisitorRecipes = () => {
   });
 
   return (
-    <>
-      <Container sx={{ mt: 4 }}>
+    <Box sx={{backgroundImage: 'url(/images/bg.jpg)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',  pt: 5, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+      <Container sx={{ mt: 4, mb:5 }}>
         <Typography variant="h4" gutterBottom>
           Explore Recipes
         </Typography>
@@ -87,35 +90,37 @@ const VisitorRecipes = () => {
           <CircularProgress />
         ) : (
           <Grid container spacing={3}>
-            {filteredRecipes.map((recipe) => (
-              <Grid item xs={12} sm={6} md={4} key={recipe._id}>
-                <Card sx={{ position: 'relative', height: 350, width: 250 }}>
-                  <CardMedia
-                    component="img"
-                    height="160"
-                    image={recipe.image}
-                    alt={recipe.title}
-                  />
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                      {recipe.title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Category: {recipe.category}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" disabled>
-                      View (Login to see more)
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+                  {filteredRecipes.map((recipe) => (
+                    <Grid item xs={12} sm={6} md={4} key={recipe._id}>
+                      <Card sx={{ position: 'relative', height: 350, width: 250 }}>
+                        <CardMedia
+                          component="img"
+                          height="200"
+                          image={recipe.image}
+                          alt={recipe.title}
+                        />
+                        <CardContent>
+                          <Typography
+                            sx={{ wordWrap: 'break-word', whiteSpace: 'normal' }}
+                            variant="h6"
+                          >
+                            {recipe.title}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Category: {recipe.category}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {recipe.instructions.slice(0, 50)}...
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
         )}
       </Container>
-    </>
+      <Footer />
+    </Box>
   );
 };
 

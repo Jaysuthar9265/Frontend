@@ -16,12 +16,12 @@ import Footer from '../../components/footer/Footer';
 
 
 const trendingRecipes = [
-  { title: 'Spicy Ramen Noodles', image: 'https://cdn.loveandlemons.com/wp-content/uploads/2020/12/plant-based-recipes.jpg' },
-  { title: 'Grilled Salmon Bowl', image: 'https://cdn.loveandlemons.com/wp-content/uploads/2020/12/plant-based-recipes.jpg' },
-  { title: 'Beef Tacos', image: 'https://cdn.loveandlemons.com/wp-content/uploads/2020/12/plant-based-recipes.jpg' },
-  { title: 'Berry Cheesecake', image: 'https://cdn.loveandlemons.com/wp-content/uploads/2020/12/plant-based-recipes.jpg' },
-  { title: 'Loaded Nachos', image: 'https://cdn.loveandlemons.com/wp-content/uploads/2020/12/plant-based-recipes.jpg' },
-  { title: 'Loaded Nachos', image: 'https://cdn.loveandlemons.com/wp-content/uploads/2020/12/plant-based-recipes.jpg' },
+  { title: 'Spicy Ramen Noodles', image: 'https://www.sidechef.com/recipe/1286b3f3-93e7-4556-9137-7b7689b2c55b.jpg?d=1408x1120' },
+  { title: 'Grilled Salmon Bowl', image: 'https://www.sidechef.com/recipe/f3e94397-9ecb-4497-aa4e-4061b9a88b20.jpg?d=1408x1120' },
+  { title: 'Beef Tacos', image: 'https://www.sidechef.com/recipe/1509d081-c453-4735-b0aa-6760807dbabd.jpeg?d=1408x1120' },
+  { title: 'Berry Cheesecake', image: 'https://www.sidechef.com/recipe/2fec750a-daf0-4371-babe-410e9152f963.jpg?d=1408x1120' },
+  { title: 'Loaded Nachos', image: 'https://www.sidechef.com/recipe/a4773db7-9021-407c-a62c-1747fa047265.jpg?d=1408x1120' },
+  { title: 'Carrot Cake Cookies', image: 'https://www.sidechef.com/recipe/d50d8f1f-c231-4b61-87c7-70ebe3ce4dc5.jpg?d=1408x1120' },
 ];
 
 const featuredContent = {
@@ -30,14 +30,14 @@ const featuredContent = {
     image: 'https://cdn.loveandlemons.com/wp-content/uploads/2020/12/plant-based-recipes.jpg',
   },
   smallCards: [
-    { title: 'Quick Breakfast Ideas', image: 'https://cdn.loveandlemons.com/wp-content/uploads/2020/12/plant-based-recipes.jpg' },
-    { title: 'One-Pot Meals', image: 'https://cdn.loveandlemons.com/wp-content/uploads/2020/12/plant-based-recipes.jpg' },
-    { title: 'Desserts for Two', image: 'https://cdn.loveandlemons.com/wp-content/uploads/2020/12/plant-based-recipes.jpg' },
+    { title: 'Quick Breakfast Ideas', image: 'https://www.sidechef.com/article/cdc64c18-0d47-431d-a808-f47fb7d88716.jpg?d=1408x1120' },
+    { title: 'One-Pot Meals', image: 'https://www.sidechef.com/recipe/8c6de499-36b3-45eb-a2f5-70d781171d29.jpeg?d=1408x1120' },
+    { title: 'Desserts for Two', image: 'https://www.sidechef.com/recipe/93d77a2a-5da4-4181-9b48-36fe44f76604.jpg?d=1408x1120' },
   ],
   smallCards1: [
-    { title: 'Quick Breakfast Idea', image: 'https://cdn.loveandlemons.com/wp-content/uploads/2020/12/plant-based-recipes.jpg' },
-    { title: 'One-Pot Meals', image: 'https://cdn.loveandlemons.com/wp-content/uploads/2020/12/plant-based-recipes.jpg' },
-    { title: 'Desserts for Two', image: 'https://cdn.loveandlemons.com/wp-content/uploads/2020/12/plant-based-recipes.jpg' },
+    { title: 'Healthy Snacks', image: 'https://www.sidechef.com/article/c36e97b2-1bed-4e34-bfd5-a9d872eee003.jpg?d=1408x1120' },
+    { title: '30-Minute Dinners', image: 'https://www.sidechef.com/recipe/df716374-1a40-4a2c-9f91-bd002c520888.jpg?d=1408x1120' },
+    { title: 'Vegetarian Favorites', image: 'https://www.sidechef.com/recipe/7910036b-3746-496b-8099-a0b1d78b6743.jpg?d=1408x1120' },
   ],
 };
 
