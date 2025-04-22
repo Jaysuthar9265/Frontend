@@ -19,7 +19,7 @@ export const appBarStyle = {
     marginRight:-1,
     borderRadius:2,
     fontWeight: 600,
-    width:'100%',
+    width:125,
     textTransform: 'none',
     '&:hover': {
       backgroundColor: '#f5f5f5',
@@ -37,7 +37,7 @@ export const adminAppBarStyle = {
     border:2,
     borderRadius:2,
     fontWeight: 600,
-    width:80,
+    width:100,
     textTransform: 'none',
     '&:hover': {
       backgroundColor: '#f5f5f5',

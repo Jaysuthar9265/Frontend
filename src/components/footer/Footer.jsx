@@ -6,12 +6,14 @@ const Footer = () => {
   return (
     <Box
       sx={{
+        borderTopLeftRadius:'20px',
+        borderTopRightRadius:'20px',
         width: '100%',
-        backgroundColor: '#333',
+        backgroundColor: '#2c3e50',
         color: 'white',
         textAlign: 'center',
-        py: 2,
-        mt: 'auto',
+        py: 10,
+        mt: 0,
         mb:0,
       }}
     >

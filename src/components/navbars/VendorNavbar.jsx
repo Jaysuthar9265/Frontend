@@ -21,7 +21,7 @@ const VendorNavbar = () => {
         <Box sx={{ display: 'flex', gap: 2 }}>
           <Button component={Link} to="/vendor/dashboard" sx={buttonStyle}>Dashboard</Button>
           <Button component={Link} to="/vendor/my-ingredients" sx={buttonStyle}>My Ingredients</Button>
-          <Button component={Link} to="/vendor/orders" sx={buttonStyle}>Orders</Button>
+          <Button component={Link} to="/vendor/add-ingredient" sx={buttonStyle}>Add Ingredients</Button>
           <Button onClick={handleLogout} sx={buttonStyle1}>Logout</Button>
         </Box>
       </Toolbar>
