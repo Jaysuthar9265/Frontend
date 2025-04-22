@@ -18,7 +18,7 @@ const MyIngredients = () => {
           });
           setIngredients(response.data || []);  // Ensure it's an array
         } catch (err) {
-          setError('Failed to fetch ingredients');
+          setError('No Ingredients Added');
           console.error('Error fetching ingredients:', err);
         } finally {
           setLoading(false);
@@ -29,12 +29,12 @@ const MyIngredients = () => {
     }, []);
   
     if (loading) {
-      return <Typography variant="h6">Loading ingredients...</Typography>;
+      return <Typography sx={{ p:10 }} variant="h3">Loading ingredients...</Typography>;
     }
   
     const handleDelete = async (ingredientId) => {
       try {
-        await axios.delete(`/api/ingredients/${ingredientId}`, {
+        await axios.delete(`http://localhost:5000/api/ingredients/${ingredientId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },

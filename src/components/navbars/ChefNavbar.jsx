@@ -21,7 +21,7 @@ const ChefNavbar = () => {
         <Box sx={{ display: 'flex', gap: 2 }}>
           <Button component={Link} to="/chef/dashboard" sx={buttonStyle}>Dashboard</Button>
           <Button component={Link} to="/chef/my-recipes" sx={buttonStyle}>My Recipes</Button>
-          <Button component={Link} to="/chef/schedule" sx={buttonStyle}>Schedule</Button>
+          
           <Button onClick={handleLogout} sx={buttonStyle1}>Logout</Button>
         </Box>
       </Toolbar>

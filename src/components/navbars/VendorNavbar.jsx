@@ -20,7 +20,7 @@ const VendorNavbar = () => {
         <Typography variant="h6" component={Link} to="/" sx={titleStyle}>Vendor Dashboard</Typography>
         <Box sx={{ display: 'flex', gap: 2 }}>
           <Button component={Link} to="/vendor/dashboard" sx={buttonStyle}>Dashboard</Button>
-          <Button component={Link} to="/vendor/products" sx={buttonStyle}>Products</Button>
+          <Button component={Link} to="/vendor/my-ingredients" sx={buttonStyle}>My Ingredients</Button>
           <Button component={Link} to="/vendor/orders" sx={buttonStyle}>Orders</Button>
           <Button onClick={handleLogout} sx={buttonStyle1}>Logout</Button>
         </Box>

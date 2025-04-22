@@ -47,7 +47,7 @@ const VisitorIngredients = () => {
               sx={{
                 boxShadow: 3,
                 borderRadius: 2,
-                height:350,
+                height:'100%',
                 width:200,
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                 '&:hover': {
@@ -56,22 +56,25 @@ const VisitorIngredients = () => {
                 },
               }}
             >
-              <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                {/* Displaying the Image */}
-                {item.imageUrl && (
+
+                  {item.imageUrl && (
+                  <Box sx={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
                   <img
                     src={item.imageUrl}
                     alt={item.title}
                     style={{
                       width: 200,
-                      height:300,
-                      borderRadius: '8px',
+                      height:200,
+                      objectFit:'cover'
                     }}
                   />
+                  </Box>
                 )}
 
+              <CardContent sx={{ textAlign:'center' }}>
+
                 {/* Displaying the Title */}
-                <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '8px' }}>
+                <Typography variant="h6" sx={{ wordWrap:'break-word', fontWeight: 'bold' }}>
                   {item.title}
                 </Typography>
 

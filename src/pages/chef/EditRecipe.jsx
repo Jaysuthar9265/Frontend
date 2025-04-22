@@ -57,7 +57,7 @@ const EditRecipe = () => {
         setFormData({
           title: recipeData.title || '',
           description: recipeData.description || '',
-          ingredients: recipeData.ingredients || '',
+          ingredients: recipeData.ingredients?.join(', ') || '',
           instructions: recipeData.instructions || '',
           category: recipeData.category || '',
           image: recipeData.image || '',
