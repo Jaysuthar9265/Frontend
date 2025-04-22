@@ -5,10 +5,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import UserLayout from './layouts/UserLayout';
 import PrivateRoute from './components/PrivateRoute';
-// Dashboards
 
-
-import VendorDashboard from './pages/vendor/VendorDashboard';
 //Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminUsers from './pages/admin/AdminUsers';
@@ -17,8 +14,7 @@ import AddAdmin from './pages/admin/AddAdmin';
 //Client Pages
 import ClientDashboard from './pages/client/ClientDashboard';
 import ClientRecipes from './pages/client/ClientRecipes';
-
-
+import ClientIngredients from './pages/client/ClientIngredients';
 
 //Chef Pages
 import ChefDashboard from './pages/chef/ChefDashboard';
@@ -26,15 +22,16 @@ import AddRecipe from './pages/chef/AddRecipe';
 import MyRecipes from './pages/chef/MyRecipes';
 import EditRecipe from './pages/chef/EditRecipe';
 
-
-
 //Visitor Pages
-
-
 import VisitorRecipes from './pages/visitor/VisitorRecipes';
 import VisitorHome from './pages/visitor/VisitorHome';
 import About from './pages/About';
+import VisitorIngredients from './pages/visitor/VisitorIngredients';
 
+//Vendor Pages
+import VendorDashboard from './pages/vendor/VendorDashboard';
+import MyIngredients from './pages/vendor/MyIngredients';
+import AddIngredient from './pages/vendor/AddIngredient';
 
 const App = () => {
   return (
@@ -49,6 +46,7 @@ const App = () => {
       <Route path="/" element={<UserLayout><VisitorHome /></UserLayout>}/>
       <Route path="/recipes" element={<UserLayout><VisitorRecipes /></UserLayout>}/>
       <Route path="/about" element={<UserLayout><About /></UserLayout>} />
+      <Route path="/visitor-ingredients" element={<UserLayout><VisitorIngredients /></UserLayout>} />
 
       {/* Role-Based Dashboards */}
 
@@ -62,6 +60,7 @@ const App = () => {
  
       <Route path="/client/dashboard" element={<PrivateRoute allowedRoles={['client']}><UserLayout><ClientDashboard /></UserLayout></PrivateRoute>}/>
       <Route path="/client/recipes" element={<PrivateRoute allowedRoles={['client']}><UserLayout><ClientRecipes /></UserLayout></PrivateRoute>} />
+      <Route path="/client-ingredients" element={<PrivateRoute allowedRoles={['client']}><UserLayout><ClientIngredients /></UserLayout></PrivateRoute>} />
 
 
         {/* Chef */}
@@ -75,7 +74,8 @@ const App = () => {
        {/* Vendor */}
 
       <Route path="/vendor/dashboard" element={<PrivateRoute allowedRoles={['vendor']}><UserLayout><VendorDashboard /></UserLayout></PrivateRoute>}/>
-  
+      <Route path="/vendor/add-ingredient" element={<PrivateRoute allowedRoles={['vendor']}><UserLayout><AddIngredient /></UserLayout></PrivateRoute>} />
+      <Route path="/vendor/my-ingredients" element={<PrivateRoute allowedRoles={['vendor']}><UserLayout><MyIngredients /></UserLayout></PrivateRoute>} />
       </Routes>
   );
 };

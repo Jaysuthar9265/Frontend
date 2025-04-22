@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-const roles = ['admin', 'client', 'chef', 'vendor'];
+const roles = ['client', 'chef', 'vendor'];
 
 const Signup = () => {
 
