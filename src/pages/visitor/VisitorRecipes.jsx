@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import Footer from '../../components/footer/Footer';
+import { Link } from 'react-router-dom';
 
 const VisitorRecipes = () => {
   const [recipes, setRecipes] = useState([]);
@@ -92,6 +93,7 @@ const VisitorRecipes = () => {
           <Grid container spacing={3}>
                   {filteredRecipes.map((recipe) => (
                     <Grid item xs={12} sm={6} md={4} key={recipe._id}>
+                      <Link to={`/recipes/${recipe._id}`} style={{ textDecoration: 'none' }}>
                       <Card sx={{ position: 'relative', height: 350, width: 250 }}>
                         <CardMedia
                           component="img"
@@ -114,6 +116,7 @@ const VisitorRecipes = () => {
                           </Typography>
                         </CardContent>
                       </Card>
+                      </Link>
                     </Grid>
                   ))}
                 </Grid>

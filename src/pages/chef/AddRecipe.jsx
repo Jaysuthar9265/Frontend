@@ -38,12 +38,15 @@ const categories = [
 
 const AddRecipe = () => {
   const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [ingredients, setIngredients] = useState('');
+  const [time, setTime] = useState('');
   const [instructions, setInstructions] = useState('');
   const [category, setCategory] = useState('');
   const [image, setImage] = useState('');
   const [success, setSuccess] = useState(false);
-
+  
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
@@ -53,7 +56,9 @@ const AddRecipe = () => {
         'http://localhost:5000/api/recipes',
         {
           title,
+          description,
           ingredients: ingredients.split(','),
+          time,
           instructions,
           category,
           image,
@@ -68,6 +73,7 @@ const AddRecipe = () => {
         setSuccess(true);
         setTitle('');
         setIngredients('');
+        setTime('');
         setInstructions('');
         setCategory('');
         setImage('');
@@ -92,6 +98,17 @@ const AddRecipe = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
+            <TextField
+            label="Description"
+            fullWidth
+            required
+            multiline
+            rows={2}
+            margin="normal"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+
           <TextField
             label="Ingredients (comma-separated)"
             fullWidth
@@ -100,6 +117,15 @@ const AddRecipe = () => {
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
           />
+            <TextField
+            label="Recipe Time"
+            fullWidth
+            required
+            margin="normal"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+          />
+
           <TextField
             label="Instructions"
             fullWidth

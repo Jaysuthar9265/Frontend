@@ -16,6 +16,11 @@ import {
   Box,
 } from "@mui/material";
 import Footer from "../../components/footer/Footer";
+import { Link } from 'react-router-dom';
+
+
+
+
 
 const ClientRecipes = () => {
   const [recipes, setRecipes] = useState([]);
@@ -23,6 +28,8 @@ const ClientRecipes = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
+ 
+  
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/recipes")
@@ -85,7 +92,9 @@ const ClientRecipes = () => {
       <Grid container spacing={3}>
         {filteredRecipes.map((recipe) => (
           <Grid item xs={12} sm={6} md={4} key={recipe._id}>
-            <Card sx={{ position: 'relative', height: 350, width: 250 }}>
+            <Link to={`/client/recipes/${recipe._id}`} style={{ textDecoration: 'none' }}>
+            <Card sx={{ position: 'relative', height: 350, width: 250 }}
+             >
               <CardMedia
                 component="img"
                 height="200"
@@ -107,6 +116,7 @@ const ClientRecipes = () => {
                 </Typography>
               </CardContent>
             </Card>
+</Link>
           </Grid>
         ))}
       </Grid>

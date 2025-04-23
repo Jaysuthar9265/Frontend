@@ -41,6 +41,7 @@ const EditRecipe = () => {
     title: '',
     description: '',
     ingredients: '',
+    time: '',
     instructions: '',
     category: '',
     image: '',
@@ -58,6 +59,7 @@ const EditRecipe = () => {
           title: recipeData.title || '',
           description: recipeData.description || '',
           ingredients: recipeData.ingredients?.join(', ') || '',
+          time: recipeData.time || '',
           instructions: recipeData.instructions || '',
           category: recipeData.category || '',
           image: recipeData.image || '',
@@ -96,6 +98,7 @@ const EditRecipe = () => {
           <TextField label="Title" name="title" fullWidth margin="normal" value={formData.title || ''} onChange={handleChange} />
           <TextField label="Description" name="description" fullWidth margin="normal" value={formData.description || ''} onChange={handleChange} />
           <TextField label="Ingredients (comma-separated)" name="ingredients" fullWidth margin="normal" value={formData.ingredients || ''} onChange={handleChange} />
+          <TextField label="Recipe Time" name="time" fullWidth margin="normal" value={formData.time || ''} onChange={handleChange}/>
           <TextField label="Instructions" name="instructions" fullWidth margin="normal" value={formData.instructions || ''} onChange={handleChange} multiline rows={4} />
           <TextField
             select

@@ -69,8 +69,9 @@ const MyRecipes = () => {
       </Typography>
       <Grid container spacing={3}>
         {recipes.map((recipe) => (
-          <Grid item xs={12} sm={6} md={4} key={recipe._id}>
-            <Card sx={{ position: 'relative', height: '420px', width:'200px' }}>
+          <Grid
+           item xs={12} sm={6} md={4} key={recipe._id}>
+            <Card sx={{ position: 'relative', height: '420px', width:'200px', display:'flex', flexDirection:'column' }}>
               <CardMedia
                 component="img"
                 height="160"
@@ -82,8 +83,9 @@ const MyRecipes = () => {
                 <Typography variant="body2" color="text.secondary">
                   Category: {recipe.category}
                 </Typography>
+           
                 <Typography variant="body2" color="text.secondary">
-                  Ingredients: {recipe.ingredients.join(', ')}
+                  Time: {recipe.time}
                 </Typography>
                 <IconButton
                 color="error"
@@ -93,12 +95,18 @@ const MyRecipes = () => {
                 <DeleteIcon />
               </IconButton>
               </CardContent>
-              <IconButton
+            
+              <Box sx={{ mt: 'auto', px: 2, pb: 2 }}>
+                <Button
+                  variant="contained"
                   color="primary"
-                    onClick={() => handleEdit(recipe._id)}
-  >
-                 <EditIcon />
-              </IconButton>
+                  fullWidth
+                  onClick={() => handleEdit(recipe._id)}
+                >
+                  Edit
+                </Button>
+              </Box>
+ 
             </Card>
           </Grid>
         ))}
