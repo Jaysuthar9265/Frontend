@@ -62,8 +62,12 @@ const VisitorRecipeDetail = () => {
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <Typography variant="h6" gutterBottom>Instructions</Typography>
-          <Typography variant="body2">{recipe.instructions}</Typography>
+        <Typography variant="h6" gutterBottom>Instructions</Typography>
+          <ol>
+            {recipe.instructions?.map((instruction, index) => (
+              <li key={index}>{instruction}</li>
+            ))}
+          </ol>
         </Grid>
       </Grid>
     </Container>

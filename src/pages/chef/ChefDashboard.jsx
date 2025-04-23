@@ -66,7 +66,7 @@ const ChefDashboard = () => {
             >
               <CardMedia
                 component="img"
-                height="160"
+                height="200"
                 image={recipe.image || 'https://via.placeholder.com/300'}
                 alt={recipe.title}
               />

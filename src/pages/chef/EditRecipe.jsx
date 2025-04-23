@@ -58,9 +58,14 @@ const EditRecipe = () => {
         setFormData({
           title: recipeData.title || '',
           description: recipeData.description || '',
-          ingredients: recipeData.ingredients?.join(', ') || '',
+          ingredients: Array.isArray(recipeData.ingredients)
+           ? recipeData.ingredients.join('\n')
+           : recipeData.ingredients || '',
+
           time: recipeData.time || '',
-          instructions: recipeData.instructions || '',
+          instructions: Array.isArray(recipeData.instructions)
+           ? recipeData.instructions.join('\n')
+           : recipeData.instructions || '',
           category: recipeData.category || '',
           image: recipeData.image || '',
         });
@@ -79,7 +84,16 @@ const EditRecipe = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`http://localhost:5000/api/recipes/${id}`, formData, {
+
+      const updatedData = {
+        ...formData,
+        ingredients: formData.ingredients.split('\n').map((item) => item.trim()).filter((item) => item !== ''),
+        instructions: formData.instructions.split('\n').map((item) => item.trim()).filter((item) => item !== ''),
+        
+      };
+      console.log('Submitting updated instructions:', updatedData.instructions);
+
+      await axios.put(`http://localhost:5000/api/recipes/${id}`, updatedData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -97,9 +111,27 @@ const EditRecipe = () => {
         <form onSubmit={handleSubmit}>
           <TextField label="Title" name="title" fullWidth margin="normal" value={formData.title || ''} onChange={handleChange} />
           <TextField label="Description" name="description" fullWidth margin="normal" value={formData.description || ''} onChange={handleChange} />
-          <TextField label="Ingredients (comma-separated)" name="ingredients" fullWidth margin="normal" value={formData.ingredients || ''} onChange={handleChange} />
+          <TextField
+              label="Ingredients (one per line)"
+              name="ingredients"
+              fullWidth
+              margin="normal"
+              multiline
+              rows={4}
+              value={formData.ingredients || ''}
+              onChange={handleChange}
+            />
           <TextField label="Recipe Time" name="time" fullWidth margin="normal" value={formData.time || ''} onChange={handleChange}/>
-          <TextField label="Instructions" name="instructions" fullWidth margin="normal" value={formData.instructions || ''} onChange={handleChange} multiline rows={4} />
+          <TextField
+              label="Instructions"
+              name="instructions"
+              fullWidth
+              margin="normal"
+              multiline
+              rows={4}
+              value={formData.instructions || ''}
+              onChange={handleChange}
+          />
           <TextField
             select
             label="Category"

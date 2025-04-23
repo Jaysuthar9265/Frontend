@@ -57,9 +57,9 @@ const AddRecipe = () => {
         {
           title,
           description,
-          ingredients: ingredients.split(','),
+          ingredients: ingredients.split('\n'),
           time,
-          instructions,
+          instructions: instructions.split('\n'),
           category,
           image,
         },
@@ -72,6 +72,7 @@ const AddRecipe = () => {
       if (res.status === 201) {
         setSuccess(true);
         setTitle('');
+        setDescription('');
         setIngredients('');
         setTime('');
         setInstructions('');
@@ -110,10 +111,13 @@ const AddRecipe = () => {
           />
 
           <TextField
-            label="Ingredients (comma-separated)"
+            label="Ingredients (Seprated By New Line)"
+            name="ingredients"
             fullWidth
             required
             margin="normal"
+            multiline
+            rows={4}
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
           />
@@ -128,6 +132,7 @@ const AddRecipe = () => {
 
           <TextField
             label="Instructions"
+            name="instructions"
             fullWidth
             required
             multiline
