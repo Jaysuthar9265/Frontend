@@ -8,10 +8,10 @@ import {
   Grid,
   Container,
   CircularProgress,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
+  AppBar,
+  Toolbar,
+  Tab,
+  Tabs,
   TextField,
   Box,
 } from "@mui/material";
@@ -53,6 +53,10 @@ const ClientRecipes = () => {
 
   if (loading) return <CircularProgress sx={{ m: 5 }} />;
 
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+  };
+
   return (
     <Box sx={{ backgroundImage: 'url(/images/bg.jpg)',
       backgroundSize: 'cover',
@@ -63,23 +67,6 @@ const ClientRecipes = () => {
 
       {/* Filters */}
       <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 3 }}>
-        <FormControl sx={{ minWidth: 200 }}>
-          <InputLabel id="category-select-label">Filter by Category</InputLabel>
-          <Select
-            labelId="category-select-label"
-            value={selectedCategory}
-            label="Filter by Category"
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          >
-            <MenuItem value="">All Categories</MenuItem>
-            {categories.map((cat, idx) => (
-              <MenuItem key={idx} value={cat}>
-                {cat}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
         <TextField
           label="Search Recipes"
           variant="outlined"
@@ -89,11 +76,30 @@ const ClientRecipes = () => {
         />
       </Box>
 
+      <AppBar position="static" sx={{ boxShadow: 0, backgroundColor: 'white', color:'black', mb:'20px', borderRadius:'10px'}}>
+          <Toolbar sx={{ justifyContent: 'center' }}>
+            <Tabs sx={{ fontWeight:600 }}
+              value={selectedCategory}
+              onChange={(e, newValue) => handleCategorySelect(newValue)}
+              textColor="inherit"
+              indicatorColor="primary"
+              variant="scrollable"
+              scrollButtons="auto"
+              
+            >
+              <Tab sx={{ fontWeight:600 }} label="All Categories" value="" />
+              {categories.map((cat, idx) => (
+                <Tab sx={{ fontWeight:600 }} key={idx} label={cat} value={cat} />
+              ))}
+            </Tabs>
+          </Toolbar>
+        </AppBar>
+
       <Grid container spacing={3}>
         {filteredRecipes.map((recipe) => (
           <Grid item xs={12} sm={6} md={4} key={recipe._id}>
             <Link to={`/client/recipes/${recipe._id}`} style={{ textDecoration: 'none' }}>
-            <Card sx={{ position: 'relative', height: 350, width: 250 }}
+            <Card sx={{ position: 'relative', height: 350, width: 269.6 }}
              >
               <CardMedia
                 component="img"

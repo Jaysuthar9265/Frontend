@@ -5,6 +5,9 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import UserLayout from './layouts/UserLayout';
 import PrivateRoute from './components/PrivateRoute';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import ResetPassword from './pages/auth/ResetPassword';
+
 
 //Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -42,6 +45,9 @@ const App = () => {
 
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
+
 
       {/* Default User Pages */}
 
