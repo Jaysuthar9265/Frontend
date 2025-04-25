@@ -6,29 +6,35 @@ import API from '../services/api';
 import { UserContext } from '../context/UserContext';
 import { CircularProgress } from '@mui/material';
 
-
-
-
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
+  const [loading, setLoading] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const { login } = useContext(UserContext);
-  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    if (form.email && form.password) {
+      setErrorMessage(''); // Clear error when input is filled
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!form.email || !form.password) {
+      setErrorMessage('Please fill the details first');
+      return;
+    }
+
+    setLoading(true);
     try {
       const res = await API.post('/auth/login', form);
       const userData = {
         name: res.data.user.name,
         role: res.data.user.role,
-        
       };
-      setLoading(true);
       login(userData);
       alert('Login Successful ✅');
       localStorage.setItem('token', res.data.token);
@@ -43,8 +49,7 @@ const Login = () => {
       else navigate('/');
     } catch (err) {
       alert(err.response?.data?.message || 'Login failed');
-    }
-    finally {
+    } finally {
       setLoading(false); // Set loading to false after the request finishes
     }
   };
@@ -61,7 +66,7 @@ const Login = () => {
         justifyContent: 'center',
       }}
     >
-      <Paper elevation={6} sx={{ padding: 4, width: 400, backdropFilter: 'blur(5px)' }}>
+      <Paper elevation={6} sx={{ padding: 4, width: 400, backdropFilter: 'blur(5px)', position: 'relative' }}>
         <Box sx={{ margin: -3, display: 'flex', justifyContent: 'flex-end' }}>
           <IconButton onClick={() => navigate('/')}>
             <CloseIcon />
@@ -71,10 +76,69 @@ const Login = () => {
         <Typography variant="h5" align="center" gutterBottom>Autochef Login</Typography>
 
         <form onSubmit={handleSubmit}>
-          <TextField fullWidth margin="normal" name="email" label="Email" onChange={handleChange} required />
-          <TextField fullWidth margin="normal" name="password" label="Password" type="password" onChange={handleChange} required />
-          <Button type="submit" sx={{ marginTop: 2 }} fullWidth variant="contained"  disabled={loading}>
-          {loading ? <CircularProgress size={24} /> : "Login"} </Button>
+          <TextField
+            fullWidth
+            margin="normal"
+            name="email"
+            label="Email"
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            name="password"
+            label="Password"
+            type="password"
+            onChange={handleChange}
+            required
+          />
+
+          <Box sx={{ position: 'relative' }}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                marginTop: 2,
+                transition: 'transform 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55)',
+                transform: isHovered && (!form.email || !form.password) ? 'translateY(200px)' : 'none', // Move the button outside
+                position: 'relative',
+                zIndex: 1,
+                marginBottom: '10px',
+              }}
+              onMouseEnter={() => {
+                if (!form.email || !form.password) {
+                  setIsHovered(true);
+                  setErrorMessage('Please Fill The Details First');
+                }
+              }}
+              onMouseLeave={() => {
+                setIsHovered(false);
+                setErrorMessage('');
+              }}
+              disabled={loading}
+            >
+              {loading ? <CircularProgress size={24} /> : 'Login'}
+            </Button>
+
+            {/* Error Message Box */}
+            {errorMessage && (
+              <Typography
+                sx={{
+                  position: 'absolute',
+                  
+                  color: 'red',
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  marginTop: '-50px',
+                  zIndex: 0,
+                }}
+              >
+                {errorMessage}
+              </Typography>
+            )}
+          </Box>
         </form>
 
         <Button fullWidth onClick={() => navigate('/forgot-password')} sx={{ mt: 1 }}>
