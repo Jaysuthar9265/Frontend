@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { TextField, Button, MenuItem, Typography, Box, Paper, IconButton, CircularProgress } from '@mui/material';
+import {
+  TextField,
+  Button,
+  MenuItem,
+  Typography,
+  Box,
+  Paper,
+  IconButton,
+  CircularProgress,
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router-dom';
 import API from '../services/api';
@@ -15,40 +24,60 @@ const Signup = () => {
     phone: '',
     password: '',
     confirmPassword: '',
-    role: ''
+    role: '',
   });
 
-  const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false); // New loading state
+  const [loading, setLoading] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: '' });
+  const validate = (data = form) => {
+    const { name, email, phone, password, confirmPassword, role } = data;
+
+    if (!name || !email || !phone || !password || !confirmPassword || !role) {
+      return 'Please Fill All Fields.';
+    }
+
+    if (password !== confirmPassword) {
+      return 'Passwords Do Not Match.';
+    }
+
+    if (password.length < 8) {
+      return 'Password Must Be At Least 8 Characters Long.';
+    }
+
+    if (password.length < 8 || !/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) {
+      return 'Password Must Include Letters And Numbers.';
+    }
+
+    if (phone.length < 10 || !/[0-9]/.test(phone)) {
+      return 'Please Enter Valid Phone Number.';
+    }
+
+
+    return '';
   };
 
-  const validate = () => {
-    const { password, confirmPassword } = form;
-  
-    if (password !== confirmPassword) {
-      return 'Passwords do not match.';
-    }
-    if (password.length < 8 || !/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) {
-      return 'Password must be at least 8 characters long and include both letters and numbers.';
-    }
-    return '';
+  const handleChange = (e) => {
+    const updatedForm = { ...form, [e.target.name]: e.target.value };
+    setForm(updatedForm);
+
+    const error = validate(updatedForm);
+    if (!error) setErrorMessage('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const error = validate();
     if (error) {
-      alert(error);
+      setErrorMessage(error);
       return;
     }
+
     const { name, email, phone, password, role } = form;
     const submitData = { name, email, phone, password, role };
-  
-    setLoading(true); // Set loading to true when submission starts
+
+    setLoading(true);
     try {
       const res = await API.post('/auth/register', submitData);
       alert(res.data.message);
@@ -56,10 +85,9 @@ const Signup = () => {
     } catch (err) {
       alert(err.response?.data?.message || 'Signup failed');
     } finally {
-      setLoading(false); // Set loading to false after the request finishes
+      setLoading(false);
     }
   };
-  
 
   return (
     <Box
@@ -86,26 +114,13 @@ const Signup = () => {
           Start By Providing :
         </Typography>
         <form onSubmit={handleSubmit}>
-          <TextField
-            fullWidth
-            margin="normal"
-            name="name"
-            label="Name"
-            onChange={handleChange}
-          />
-          <TextField
-            fullWidth
-            margin="normal"
-            name="email"
-            label="Email"
-            onChange={handleChange}
-          />
+          <TextField fullWidth margin="normal" name="name" label="Name" onChange={handleChange} />
+          <TextField fullWidth margin="normal" name="email" label="Email" onChange={handleChange} />
           <TextField
             fullWidth
             margin="normal"
             name="phone"
             label="Phone"
-            value={form.phone}
             onChange={handleChange}
           />
           <TextField
@@ -115,8 +130,6 @@ const Signup = () => {
             label="Password"
             type="password"
             onChange={handleChange}
-            error={!!errors.password}
-            helperText={errors.password}
           />
           <TextField
             fullWidth
@@ -125,8 +138,6 @@ const Signup = () => {
             label="Confirm Password"
             type="password"
             onChange={handleChange}
-            error={!!errors.confirmPassword}
-            helperText={errors.confirmPassword}
           />
           <TextField
             fullWidth
@@ -136,8 +147,6 @@ const Signup = () => {
             label="Role"
             value={form.role}
             onChange={handleChange}
-            error={!!errors.role}
-            helperText={errors.role}
           >
             {roles.map((role) => (
               <MenuItem key={role} value={role}>
@@ -146,9 +155,47 @@ const Signup = () => {
             ))}
           </TextField>
 
-          <Button fullWidth variant="contained" type="submit" disabled={loading}>
-            {loading ? <CircularProgress size={24} /> : "Sign Up"}
-          </Button>
+          <Box sx={{ position: 'relative' }}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled={loading}
+              sx={{
+                marginTop: 2,
+                transition: 'transform 0.2s ease-in-out',
+                transform: isHovered && validate() ? 'translateY(200px)' : 'none',
+              }}
+              onMouseEnter={() => {
+                const error = validate();
+                if (error) {
+                  setIsHovered(true);
+                  setErrorMessage(error);
+                }
+              }}
+              onMouseLeave={() => {
+                setIsHovered(false);
+                setErrorMessage('');
+              }}
+            >
+              {loading ? <CircularProgress size={24} /> : 'Sign Up'}
+            </Button>
+
+            {errorMessage && (
+              <Typography
+                sx={{
+                  position: 'absolute',
+                  color: 'red',
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  marginTop: '-60px',
+                }}
+              >
+                {errorMessage}
+              </Typography>
+            )}
+          </Box>
+
           <Button
             sx={{ marginTop: 2 }}
             fullWidth
