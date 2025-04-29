@@ -26,27 +26,29 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <Box p={3}>
+    <Box sx={{ backgroundImage: 'url("/images/bg.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', mt:-6 }} p={3}>
       <Grid container spacing={3} justifyContent="center">
         {cardData.map((item, index) => (
           <Grid item key={index}>
             <Card
               sx={{
-                width: 200,
-                height: 200,
+
+                width: 500,
+                height: 500,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: '#f5f5f5',
+                backgroundColor: 'rgba(255, 255, 255, 0.36)',
                 textAlign: 'center',
                 boxShadow: 3,
+                borderRadius:'10px'
               }}
             >
               <CardContent>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h5" gutterBottom>
                   {item.title}
                 </Typography>
-                <Typography variant="h4" color="primary">
+                <Typography variant="h2" color="primary">
                   {item.value}
                 </Typography>
               </CardContent>

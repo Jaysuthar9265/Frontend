@@ -34,7 +34,7 @@ const ChefDashboard = () => {
   }, []);
 
   return (
-    <Box p={4}>
+    <Box sx={{ minHeight:'100vh', backgroundImage: 'url("/images/bg.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }} p={4}>
       <Typography variant="h4" gutterBottom>
         Welcome, Chef!
       </Typography>

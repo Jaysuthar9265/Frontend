@@ -9,6 +9,7 @@ import {
   Alert,
 } from '@mui/material';
 import axios from 'axios';
+import Footer from '../../components/footer/Footer'
 
 const ClientIngredients = () => {
   const [ingredients, setIngredients] = useState([]);
@@ -32,7 +33,8 @@ const ClientIngredients = () => {
   }, []);
 
   return (
-      <Box sx={{ p: 4 }}>
+    <Box>
+      <Box sx={{ p: 4, minHeight:'100vh' }}>
         <Typography variant="h4" gutterBottom>
           Explore Ingredients
         </Typography>
@@ -83,6 +85,8 @@ const ClientIngredients = () => {
             </Grid>
           ))}
         </Grid>
+        </Box>
+        <Footer />
       </Box>
     );
   };

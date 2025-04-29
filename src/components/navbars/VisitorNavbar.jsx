@@ -17,9 +17,9 @@ const VisitorNavbar = () => {
         </Typography>
 
         <Box sx={{ display: 'flex', gap: { xs: 1, md: 2 } }}>
-          <Button component={Link} to="/" sx={buttonStyle}>Home</Button>
-          <Button component={Link} to="/recipes" sx={buttonStyle}>Recipes</Button>
-          <Button component={Link} to="/visitor-ingredients" sx={buttonStyle}>Ingredients</Button>
+          <Button component={Link} to="/client/dashboard" sx={buttonStyle}>Home</Button>
+          <Button component={Link} to="/client/recipes" sx={buttonStyle}>Recipes</Button>
+          <Button component={Link} to="/client-ingredients" sx={buttonStyle}>Ingredients</Button>
           <Button component={Link} to="/about" sx={buttonStyle}>About</Button>
           <Button component={Link} to="/login" sx={buttonStyle1}>Login</Button>
           <Button component={Link} to="/signup" sx={buttonStyle1}>Register</Button>

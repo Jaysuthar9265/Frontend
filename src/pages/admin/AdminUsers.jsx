@@ -63,6 +63,7 @@ const AdminUsers = () => {
   const groupByRole = (role) => filteredUsers.filter((user) => user.role === role);
 
   return (
+    <Box sx={{ backgroundImage: 'url("/images/bg.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', mt:-10, pt:5 }}>
     <Container sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom>
         Manage Users
@@ -96,7 +97,7 @@ const AdminUsers = () => {
               {role.charAt(0).toUpperCase() + role.slice(1)}s
             </Typography>
             <Divider sx={{ mb: 2 }} />
-            <TableContainer component={Paper}>
+            <TableContainer  sx={{ bgcolor:'rgba(255, 255, 255, 0.53)' }} component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>
@@ -137,6 +138,7 @@ const AdminUsers = () => {
         </DialogActions>
       </Dialog>
     </Container>
+    </Box>
   );
 };
 

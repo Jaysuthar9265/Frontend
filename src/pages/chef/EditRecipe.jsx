@@ -8,6 +8,7 @@ import {
   Typography,
   Paper,
   MenuItem,
+  Box,
 } from '@mui/material';
 
 const categories = [
@@ -105,12 +106,13 @@ const EditRecipe = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
+    <Box  sx={{ minHeight:'100vh', backgroundImage: 'url("/images/bg.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', mt:-4.03 }}>
+    <Container maxWidth="md" sx={{ mt: 4, pt:2 }}>
+      <Paper elevation={3} sx={{ bgcolor:'rgba(255, 255, 255, 0.62)', p: 4 }}>
         <Typography variant="h5" gutterBottom>Edit Recipe</Typography>
         <form onSubmit={handleSubmit}>
           <TextField label="Title" name="title" fullWidth margin="normal" value={formData.title || ''} onChange={handleChange} />
-          <TextField label="Description" name="description" fullWidth margin="normal" value={formData.description || ''} onChange={handleChange} />
+          <TextField multiline rows={4} label="Description" name="description" fullWidth margin="normal" value={formData.description || ''} onChange={handleChange} />
           <TextField
               label="Ingredients (one per line)"
               name="ingredients"
@@ -150,6 +152,7 @@ const EditRecipe = () => {
         </form>
       </Paper>
     </Container>
+    </Box>
   );
 };
 

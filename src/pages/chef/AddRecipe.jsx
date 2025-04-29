@@ -85,8 +85,9 @@ const AddRecipe = () => {
   };
 
   return (
-    <Box p={4} maxWidth={600} margin="auto">
-      <Paper elevation={3} sx={{ p: 4 }}>
+    <Box sx={{ backgroundImage: 'url("/images/bg.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <Box minHeight={'100vh'} p={4} maxWidth={600} margin="auto">
+      <Paper elevation={3} sx={{ bgcolor:'rgba(255, 255, 255, 0.62)', p: 4 }}>
         <Typography variant="h5" gutterBottom>
           Add New Recipe
         </Typography>
@@ -174,6 +175,7 @@ const AddRecipe = () => {
           Recipe added successfully!
         </Alert>
       </Snackbar>
+    </Box>
     </Box>
   );
 };

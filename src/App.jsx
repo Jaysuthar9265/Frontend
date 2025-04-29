@@ -9,6 +9,11 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
 
 
+//User Pages
+import About from './pages/About';
+
+
+
 //Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminUsers from './pages/admin/AdminUsers';
@@ -18,6 +23,7 @@ import AddAdmin from './pages/admin/AddAdmin';
 import ClientDashboard from './pages/client/ClientDashboard';
 import ClientRecipes from './pages/client/ClientRecipes';
 import ClientIngredients from './pages/client/ClientIngredients';
+import ClientRecipeDetail from './pages/client/ClientRecipeDetail';
 
 //Chef Pages
 import ChefDashboard from './pages/chef/ChefDashboard';
@@ -25,18 +31,12 @@ import AddRecipe from './pages/chef/AddRecipe';
 import MyRecipes from './pages/chef/MyRecipes';
 import EditRecipe from './pages/chef/EditRecipe';
 
-//Visitor Pages
-import VisitorRecipes from './pages/visitor/VisitorRecipes';
-import VisitorHome from './pages/visitor/VisitorHome';
-import About from './pages/About';
-import VisitorIngredients from './pages/visitor/VisitorIngredients';
 
 //Vendor Pages
 import VendorDashboard from './pages/vendor/VendorDashboard';
 import MyIngredients from './pages/vendor/MyIngredients';
 import AddIngredient from './pages/vendor/AddIngredient';
-import ClientRecipeDetail from './pages/client/ClientRecipeDetail';
-import VisitorRecipeDetail from './pages/visitor/VisitorRecipeDetail';
+import ClientFavorites from './pages/client/ClientFavorites';
 
 const App = () => {
   return (
@@ -51,11 +51,9 @@ const App = () => {
 
       {/* Default User Pages */}
 
-      <Route path="/" element={<UserLayout><VisitorHome /></UserLayout>}/>
-      <Route path="/recipes" element={<UserLayout><VisitorRecipes /></UserLayout>}/>
       <Route path="/about" element={<UserLayout><About /></UserLayout>} />
-      <Route path="/visitor-ingredients" element={<UserLayout><VisitorIngredients /></UserLayout>} />
-      <Route path="/recipes/:id" element={<UserLayout><VisitorRecipeDetail /></UserLayout>} />
+      <Route path="/" element={<UserLayout><ClientDashboard /></UserLayout>} />
+
 
       {/* Role-Based Dashboards */}
 
@@ -67,10 +65,11 @@ const App = () => {
  
       {/* Client */}
  
-      <Route path="/client/dashboard" element={<PrivateRoute allowedRoles={['client']}><UserLayout><ClientDashboard /></UserLayout></PrivateRoute>}/>
-      <Route path="/client/recipes" element={<PrivateRoute allowedRoles={['client']}><UserLayout><ClientRecipes /></UserLayout></PrivateRoute>} />
-      <Route path="/client-ingredients" element={<PrivateRoute allowedRoles={['client']}><UserLayout><ClientIngredients /></UserLayout></PrivateRoute>} />
-      <Route path="/client/recipes/:id" element={<PrivateRoute allowedRoles={['client']}><UserLayout><ClientRecipeDetail /></UserLayout></PrivateRoute>} />
+      <Route path="/client/dashboard" element={<UserLayout><ClientDashboard /></UserLayout>}/>
+      <Route path="/client/recipes" element={<UserLayout><ClientRecipes /></UserLayout>}/>
+      <Route path="/client-ingredients" element={<UserLayout><ClientIngredients /></UserLayout>}/>
+      <Route path="/client/recipes/:id" element={<UserLayout><ClientRecipeDetail /></UserLayout>}/>
+      <Route path="/client/favorites" element={<UserLayout><ClientFavorites /></UserLayout>} />
 
 
         {/* Chef */}

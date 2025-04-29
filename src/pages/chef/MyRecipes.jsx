@@ -63,7 +63,7 @@ const MyRecipes = () => {
   }, []);
 
   return (
-    <Box p={4}>
+    <Box sx={{ minHeight:'100vh', backgroundImage: 'url("/images/bg.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }} p={4}>
       <Typography variant="h4" gutterBottom>
         My Recipes
       </Typography>
@@ -71,7 +71,7 @@ const MyRecipes = () => {
         {recipes.map((recipe) => (
           <Grid
            item xs={12} sm={6} md={4} key={recipe._id}>
-            <Card sx={{ position: 'relative', height: '420px', width:'200px', display:'flex', flexDirection:'column' }}>
+            <Card sx={{ bgcolor:'rgba(255, 255, 255, 0.62)', borderRadius:'10px', position: 'relative', height: '420px', width:'200px', display:'flex', flexDirection:'column' }}>
               <CardMedia
                 component="img"
                 height="160"

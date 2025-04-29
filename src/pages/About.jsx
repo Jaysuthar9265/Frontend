@@ -15,10 +15,14 @@ import FlagIcon from '@mui/icons-material/Flag';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import PersonIcon from '@mui/icons-material/Person';
 import teamImage from '/images/Kitchen.jpg';
+import Footer from '../components/footer/Footer';
 
 const AboutUs = () => {
   return (
-    <Box sx={{ backgroundColor: '#f9f9f9', py: 8 }}>
+    <Box sx={{backgroundImage: 'url("/images/bg.jpg")',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'}}>
+    <Box sx={{ py: 8 }}>
       <Container maxWidth="lg">
 
         {/* Top: Image left, text right */}
@@ -32,7 +36,8 @@ const AboutUs = () => {
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <Typography variant="h3" fontWeight="bold" gutterBottom>
+          <Card sx={{ justifyItems:'center', textAlign: 'center', p: 3, bgcolor:'rgba(255, 255, 255, 0.50)', borderRadius:'8px'}}>
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
               About AutoChef
             </Typography>
             <Typography variant="body1" color="text.secondary">
@@ -40,19 +45,24 @@ const AboutUs = () => {
               enjoy meals through smart recipes, integrated kitchen tools, and seamless grocery experiences. Whether
               you're a beginner or a pro, AutoChef is here to make your cooking journey delightful.
             </Typography>
+          </Card>
           </Grid>
         </Grid>
 
         <Divider sx={{ mb: 6 }} />
 
         {/* Our Values Section */}
-        <Typography variant="h4" align="center" gutterBottom fontWeight="bold">
+        <Typography sx={{ pb:5 }} variant="h4" align="center" gutterBottom fontWeight="bold">
           Our Values
         </Typography>
 
         <Grid container spacing={4} justifyContent="center">
           <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ textAlign: 'center', p: 3, width:500 }}>
+            <Card sx={{ justifyItems:'center', textAlign: 'center', p: 3, maxWidth:500, bgcolor:'rgba(255, 255, 255, 0.50)', borderRadius:'8px',
+              transition: 'transform 0.3s',
+                '&:hover': { transform: 'scale(1.05)' }
+              
+             }}>
               <Avatar sx={{ bgcolor: 'primary.main', mb: 2 }}>
                 <RocketLaunchIcon />
               </Avatar>
@@ -64,7 +74,11 @@ const AboutUs = () => {
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ textAlign: 'center', p: 3, width:500 }}>
+            <Card sx={{ justifyItems:'center', textAlign: 'center', p: 3, maxWidth:500, bgcolor:'rgba(255, 255, 255, 0.50)', borderRadius:'8px',
+              transition: 'transform 0.3s',
+                '&:hover': { transform: 'scale(1.05)' }
+              
+             }}>
               <Avatar sx={{ bgcolor: 'primary.main', mb: 2 }}>
                 <PersonIcon />
               </Avatar>
@@ -76,7 +90,11 @@ const AboutUs = () => {
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ textAlign: 'center', p: 3, width:500 }}>
+            <Card sx={{ justifyItems:'center', textAlign: 'center', p: 3, maxWidth:500, bgcolor:'rgba(255, 255, 255, 0.50)', borderRadius:'8px',
+              transition: 'transform 0.3s',
+                '&:hover': { transform: 'scale(1.05)' }
+              
+             }}>
               <Avatar sx={{ bgcolor: 'error.main', mb: 2 }}>
                 <FlagIcon />
               </Avatar>
@@ -88,7 +106,11 @@ const AboutUs = () => {
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ textAlign: 'center', p: 3, width:500 }}>
+            <Card sx={{ justifyItems:'center', textAlign: 'center', p: 3, maxWidth:500, bgcolor:'rgba(255, 255, 255, 0.50)', borderRadius:'8px',
+              transition: 'transform 0.3s',
+                '&:hover': { transform: 'scale(1.05)' }
+              
+             }}>
               <Avatar sx={{ bgcolor: 'info.main', mb: 2 }}>
                 <HandshakeIcon />
               </Avatar>
@@ -100,7 +122,11 @@ const AboutUs = () => {
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ textAlign: 'center', p: 3, width:500 }}>
+            <Card sx={{ justifyItems:'center', textAlign: 'center', p: 3, maxWidth:500, bgcolor:'rgba(255, 255, 255, 0.50)', borderRadius:'8px',
+              transition: 'transform 0.3s',
+                '&:hover': { transform: 'scale(1.05)' }
+              
+             }}>
               <Avatar sx={{ bgcolor: 'secondary.main', mb: 2}}>
                 <EmojiObjectsIcon />
               </Avatar>
@@ -115,6 +141,8 @@ const AboutUs = () => {
         </Grid>
 
       </Container>
+      </Box>
+      <Footer />
     </Box>
   );
 };
