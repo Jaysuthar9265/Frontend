@@ -15,6 +15,10 @@ import {
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 
 const ClientRecipeDetail = () => {
   const { id } = useParams();
@@ -22,7 +26,8 @@ const ClientRecipeDetail = () => {
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
-
+  const [favoriteEntry, setFavoriteEntry] = useState(null);
+  
   // Function to fetch the recipe details
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -42,18 +47,28 @@ const ClientRecipeDetail = () => {
   // Check if the recipe is already in favorites
   useEffect(() => {
     const checkFavorite = async () => {
-      const token = localStorage.getItem('authToken');
-      if (token) {
-        try {
-          const res = await axios.get(`http://localhost:5000/api/favorites/`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          setIsFavorite(res.data.some(fav => fav.recipe._id === recipe._id));
-        } catch (err) {
-          console.error('Error checking favorites:', err);
+      const token = localStorage.getItem('token');
+      try {
+        const res = await axios.get(`http://localhost:5000/api/favorites/`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+    
+        const foundFavorite = res.data.find(
+          (f) => f.recipe._id === recipe._id // or f.recipe === recipe._id depending on your backend
+        );
+    
+        if (foundFavorite) {
+          setIsFavorite(true);
+          setFavoriteEntry(foundFavorite); // Ensure full favorite object with _id is stored
+        } else {
+          setIsFavorite(false);
+          setFavoriteEntry(null);
         }
+      } catch (err) {
+        console.error('Error checking favorite:', err);
       }
     };
+    
     if (recipe) {
       checkFavorite();
     }
@@ -62,7 +77,7 @@ const ClientRecipeDetail = () => {
   // Function to handle adding the recipe to favorites
   const handleAddToFavorites = async () => {
     const token = localStorage.getItem('token');
-    const recipeId = recipe._id;
+   
 
     if (!token) {
       alert('You need to log in to add to favorites.');
@@ -72,10 +87,11 @@ const ClientRecipeDetail = () => {
     try {
       const response = await axios.post(
         'http://localhost:5000/api/favorites/add',
-        { recipeId },
+        { recipeId: recipe._id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setIsFavorite(true);
+      setFavoriteEntry(response.data);
       console.log('Added to favorites:', response.data);
     } catch (err) {
       console.error('Failed to add to favorites:', err);
@@ -84,28 +100,22 @@ const ClientRecipeDetail = () => {
 
   // Function to handle removing the recipe from favorites
   const handleRemoveFromFavorites = async () => {
-    const token = localStorage.getItem('authToken');
-    const recipeId = recipe._id;
 
-    if (!token) {
-      alert('You need to log in to remove from favorites.');
-      return;
-    }
+    const token = localStorage.getItem('token');
 
     try {
-      const response = await axios.delete(
-        'http://localhost:5000/api/favorites/remove',
-        {
-          data: { recipeId },
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+      if (!favoriteEntry?._id) return; // Ensure we have an ID
+      await axios.delete(`http://localhost:5000/api/favorites/${favoriteEntry._id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
       setIsFavorite(false);
-      console.log('Removed from favorites:', response.data);
-    } catch (err) {
-      console.error('Failed to remove from favorites:', err);
+      setFavoriteEntry(null);
+    } catch (error) {
+      console.error('Failed to remove from favorites:', error);
     }
   };
+  
 
   // Loader while fetching recipe
   if (loading)
@@ -169,24 +179,26 @@ const ClientRecipeDetail = () => {
                         }}
                       />
                       {/* Add to Favorites or Remove from Favorites Button */}
-                      <Button
-                        onClick={isFavorite ? handleRemoveFromFavorites : handleAddToFavorites}
-                        variant="contained"
-                        color={isFavorite ? 'secondary' : 'primary'}
-                        sx={{
-                          position: 'absolute',
-                          top: 10,
-                          right: 10,
-                          borderRadius: 5,
-                          fontWeight: 'bold',
-                          bgcolor: 'primary.main',
-                          '&:hover': {
-                            bgcolor: 'primary.dark',
-                          }
-                        }}
-                      >
-                        {isFavorite ? 'Remove from Favorites' : 'Add to Favourites'}
-                      </Button>
+                      <Box sx={{ position: 'absolute', top: 10, right: 10 }}>
+                        <Tooltip title={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}>
+                          <IconButton
+                            onClick={isFavorite ? handleRemoveFromFavorites : handleAddToFavorites}
+
+                            sx={{
+                              bgcolor: 'white',
+                              '&:hover': { bgcolor: 'grey.200' },
+                              boxShadow: 2
+                            }}
+                          >
+                            {isFavorite ? (
+                              <FavoriteIcon sx={{ color: 'red' }} />
+                            ) : (
+                              <FavoriteBorderIcon sx={{ color: 'red' }} />
+                            )}
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+
                     </Grid>
                   </Box>
 

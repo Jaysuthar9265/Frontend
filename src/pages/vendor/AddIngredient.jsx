@@ -7,6 +7,7 @@ const AddIngredient = () => {
   const [description, setDescription] = useState('');
   const [quantity, setQuantity] = useState('');
   const [units, setUnits] = useState('');
+  const [price, setPrice] = useState('');
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -24,6 +25,7 @@ const AddIngredient = () => {
     formData.append('description', description);
     formData.append('quantity', quantity);
     formData.append('units', units);
+    formData.append('price', price);
     formData.append('image', image);
 
     try {
@@ -41,6 +43,7 @@ const AddIngredient = () => {
         setDescription('');
         setQuantity('');
         setUnits('');
+        setPrice('');
         setImage(null);
       }
     } catch (err) {
@@ -78,6 +81,7 @@ const AddIngredient = () => {
         margin="normal"
         required
       />
+     
       <FormControl fullWidth margin="normal" required>
         <InputLabel>Units</InputLabel>
         <Select
@@ -90,6 +94,17 @@ const AddIngredient = () => {
           <MenuItem value="ml">ml</MenuItem>
         </Select>
       </FormControl>
+
+      <TextField
+        label="Price"
+        type="number"
+        fullWidth
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+        margin="normal"
+        required
+      />
+
       <input
         type="file"
         onChange={(e) => setImage(e.target.files[0])}

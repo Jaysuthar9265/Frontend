@@ -34,6 +34,7 @@ const Login = () => {
       const userData = {
         name: res.data.user.name,
         role: res.data.user.role,
+        token: res.data.token,
       };
       login(userData);
       alert('Login Successful ✅');

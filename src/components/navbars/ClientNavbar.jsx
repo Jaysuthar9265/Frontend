@@ -23,6 +23,7 @@ const ClientNavbar = () => {
           <Button component={Link} to="/client/recipes" sx={buttonStyle}>Recipes</Button>
           <Button component={Link} to="/client-ingredients" sx={buttonStyle}>Ingredients</Button>
           <Button component={Link} to="/client/favorites" sx={buttonStyle}>Favorites</Button>
+          <Button component={Link} to="/client/cart" sx={buttonStyle}>Cart</Button>
           <Button component={Link} to="/about" sx={buttonStyle}>About</Button>
           <Button onClick={handleLogout} sx={buttonStyle1}>Logout</Button>
         </Box>
