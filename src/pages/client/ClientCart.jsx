@@ -71,24 +71,72 @@ const ClientCart = () => {
     }
   };
 
-  const updateQuantity = (ingredientId, delta) => {
+  const updateQuantity = async (ingredientId, delta) => {
     const updatedItems = cartItems.map((item) => {
       if (item.ingredient._id === ingredientId) {
         const newQty = item.quantity + delta;
-        return { ...item, quantity: newQty > 0 ? newQty : 1 }; // Ensure quantity doesn't go below 1
+        return { ...item, quantity: newQty > 0 ? newQty : 1 };
       }
       return item;
     });
+  
     setCartItems(updatedItems);
     calculateTotal(updatedItems);
+  
+    const token = localStorage.getItem('token');
+    try {
+      await axios.put(`http://localhost:5000/api/cart/update/${ingredientId}`, {
+        quantity: updatedItems.find(item => item.ingredient._id === ingredientId).quantity,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (err) {
+      console.error('Error updating quantity:', err);
+    }
   };
+  
+
+  const handleCheckout = async () => {
+    const token = localStorage.getItem('token');
+  
+    const items = cartItems.map(item => ({
+      ingredientId: item.ingredient._id,
+      quantity: item.quantity,
+    }));
+  
+    try {
+      await axios.post(
+        'http://localhost:5000/api/orders/checkout',
+        { items },
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+  
+      alert('Order placed successfully!');
+      setCartItems([]);
+      setTotal(0);
+  
+    } catch (error) {
+      console.error('Checkout failed:', error);
+      alert('Checkout failed');
+    }
+  };
+  
+  
 
   useEffect(() => {
     fetchCart();
   }, [fetchCart]);
 
   return (
-    <Box>
+    <Box sx={{
+      backgroundImage: 'url(/images/bg.jpg)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
       <Box sx={{ p: 4, minHeight: '100vh' }}>
         <Typography variant="h4" gutterBottom>
           My Ingredient Cart
@@ -176,7 +224,17 @@ const ClientCart = () => {
           <Box sx={{ mt: 4 }}>
             <Typography variant="h5">Total: ₹{total}</Typography>
           </Box>
+          
         )}
+       <Button 
+            variant="contained" 
+            onClick={handleCheckout} 
+            disabled={cartItems.length === 0}
+          >
+            Checkout
+          </Button>
+
+
       </Box>
       <Footer />
     </Box>

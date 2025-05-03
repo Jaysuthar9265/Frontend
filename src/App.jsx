@@ -39,6 +39,7 @@ import AddIngredient from './pages/vendor/AddIngredient';
 import ClientFavorites from './pages/client/ClientFavorites';
 import ClientCart from './pages/client/ClientCart';
 import EditIngredient from './pages/vendor/EditIngredient';
+import MyOrders from './pages/client/MyOrders';
 
 const App = () => {
   return (
@@ -73,6 +74,8 @@ const App = () => {
       <Route path="/client/recipes/:id" element={<UserLayout><ClientRecipeDetail /></UserLayout>}/>
       <Route path="/client/favorites" element={<UserLayout><ClientFavorites /></UserLayout>} />
       <Route path="/client/cart" element={<UserLayout><ClientCart /></UserLayout>} />
+      <Route path="/client/my-orders" element={<UserLayout><MyOrders /></UserLayout>} />
+
 
 
         {/* Chef */}

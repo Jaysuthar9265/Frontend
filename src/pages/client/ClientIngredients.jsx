@@ -51,7 +51,7 @@ const ClientIngredients = () => {
       setSnackOpen(true);
     } catch (err) {
       console.error('Add to cart failed', err);
-      setSnackMsg('Failed to add to cart');
+      setSnackMsg('Login to add to cart');
       setSnackOpen(true);
     }
   };
@@ -61,7 +61,11 @@ const ClientIngredients = () => {
   }, []);
 
   return (
-    <Box>
+    <Box sx={{
+      backgroundImage: 'url(/images/bg.jpg)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
       <Box sx={{ p: 4, minHeight: '100vh' }}>
         <Typography variant="h4" gutterBottom>
           Explore Ingredients

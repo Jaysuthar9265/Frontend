@@ -9,6 +9,7 @@ import {
   CardActions,
   IconButton,
   CircularProgress,
+  Box,
 } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import axios from 'axios';
@@ -63,7 +64,15 @@ const ClientFavorites = () => {
   }
 
   return (
-    <Container sx={{ mt: 4 }}>
+    <Box sx={{
+      backgroundImage: 'url(/images/bg.jpg)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      minHeight:'100vh',
+      mt:-4.1,
+      
+    }}>
+    <Container sx={{ mt: 4, p:3 }}>
       <Typography variant="h4" gutterBottom>
         Your Favorite Recipes
       </Typography>
@@ -99,6 +108,7 @@ const ClientFavorites = () => {
         ))}
       </Grid>
     </Container>
+    </Box>
   );
 };
 
