@@ -19,6 +19,8 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import { ToastContainer, toast } from 'react-toastify'; // Import react-toastify components
+import 'react-toastify/dist/ReactToastify.css'; // Import styles
 
 const ClientRecipeDetail = () => {
   const { id } = useParams();
@@ -27,7 +29,7 @@ const ClientRecipeDetail = () => {
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
   const [favoriteEntry, setFavoriteEntry] = useState(null);
-  
+
   // Function to fetch the recipe details
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -52,11 +54,11 @@ const ClientRecipeDetail = () => {
         const res = await axios.get(`http://localhost:5000/api/favorites/`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-    
+
         const foundFavorite = res.data.find(
-          (f) => f.recipe._id === recipe._id // or f.recipe === recipe._id depending on your backend
+          (f) => f.recipe._id === recipe._id
         );
-    
+
         if (foundFavorite) {
           setIsFavorite(true);
           setFavoriteEntry(foundFavorite); // Ensure full favorite object with _id is stored
@@ -68,7 +70,7 @@ const ClientRecipeDetail = () => {
         console.error('Error checking favorite:', err);
       }
     };
-    
+
     if (recipe) {
       checkFavorite();
     }
@@ -77,7 +79,6 @@ const ClientRecipeDetail = () => {
   // Function to handle adding the recipe to favorites
   const handleAddToFavorites = async () => {
     const token = localStorage.getItem('token');
-   
 
     if (!token) {
       alert('You need to log in to add to favorites.');
@@ -92,15 +93,15 @@ const ClientRecipeDetail = () => {
       );
       setIsFavorite(true);
       setFavoriteEntry(response.data);
-      console.log('Added to favorites:', response.data);
+      toast.success('Recipe added to favorites!'); // Toast notification for success
     } catch (err) {
       console.error('Failed to add to favorites:', err);
+      toast.error('Failed to add recipe to favorites.'); // Toast notification for failure
     }
   };
 
   // Function to handle removing the recipe from favorites
   const handleRemoveFromFavorites = async () => {
-
     const token = localStorage.getItem('token');
 
     try {
@@ -108,14 +109,15 @@ const ClientRecipeDetail = () => {
       await axios.delete(`http://localhost:5000/api/favorites/${favoriteEntry._id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
+
       setIsFavorite(false);
       setFavoriteEntry(null);
+      toast.info('Recipe removed from favorites!'); // Toast notification for removal
     } catch (error) {
       console.error('Failed to remove from favorites:', error);
+      toast.error('Failed to remove recipe from favorites.'); // Toast notification for failure
     }
   };
-  
 
   // Loader while fetching recipe
   if (loading)
@@ -183,7 +185,6 @@ const ClientRecipeDetail = () => {
                         <Tooltip title={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}>
                           <IconButton
                             onClick={isFavorite ? handleRemoveFromFavorites : handleAddToFavorites}
-
                             sx={{
                               bgcolor: 'white',
                               '&:hover': { bgcolor: 'grey.200' },
@@ -198,7 +199,6 @@ const ClientRecipeDetail = () => {
                           </IconButton>
                         </Tooltip>
                       </Box>
-
                     </Grid>
                   </Box>
 
@@ -276,6 +276,8 @@ const ClientRecipeDetail = () => {
         </Fade>
       </Container>
       <Footer />
+      {/* Toast Container */}
+      <ToastContainer position="top-right" autoClose={5000} newestOnTop closeButton />
     </Box>
   );
 };

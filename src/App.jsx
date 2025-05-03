@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -73,7 +74,7 @@ const App = () => {
       <Route path="/client-ingredients" element={<UserLayout><ClientIngredients /></UserLayout>}/>
       <Route path="/client/recipes/:id" element={<UserLayout><ClientRecipeDetail /></UserLayout>}/>
       <Route path="/client/favorites" element={<UserLayout><ClientFavorites /></UserLayout>} />
-      <Route path="/client/cart" element={<UserLayout><ClientCart /></UserLayout>} />
+      <Route path="/client/cart" element={<UserLayout><ClientCart /><ToastContainer /></UserLayout>} />
       <Route path="/client/my-orders" element={<UserLayout><MyOrders /></UserLayout>} />
 
 

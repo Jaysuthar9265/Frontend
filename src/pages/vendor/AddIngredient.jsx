@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { TextField, Button, Box, InputLabel, MenuItem, FormControl, Select, CircularProgress, Typography } from '@mui/material';
+import { toast, ToastContainer } from 'react-toastify'; // Import toast
+import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
 
 const AddIngredient = () => {
   const [title, setTitle] = useState('');
@@ -10,14 +12,10 @@ const AddIngredient = () => {
   const [price, setPrice] = useState('');
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
-    setError('');
 
     const token = localStorage.getItem('token');
     const formData = new FormData();
@@ -37,8 +35,7 @@ const AddIngredient = () => {
       });
 
       if (response.data.message === 'Ingredient added successfully') {
-        setMessage('Ingredient added successfully!');
-        // Clear the form after successful submission
+        toast.success('Ingredient added successfully!');
         setTitle('');
         setDescription('');
         setQuantity('');
@@ -47,7 +44,7 @@ const AddIngredient = () => {
         setImage(null);
       }
     } catch (err) {
-      setError('Error adding ingredient');
+      toast.error('Error adding ingredient'); // Toast error message
       console.error('Error adding ingredient:', err);
     } finally {
       setLoading(false);
@@ -115,8 +112,7 @@ const AddIngredient = () => {
         {loading ? <CircularProgress size={24} color="inherit" /> : 'Add Ingredient'}
       </Button>
 
-      {message && <Typography sx={{ mt: 2, color: 'green' }}>{message}</Typography>}
-      {error && <Typography sx={{ mt: 2, color: 'red' }}>{error}</Typography>}
+      <ToastContainer />
     </Box>
   );
 };

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import { TextField, Button, Box, CircularProgress, Typography } from '@mui/material';
+import { TextField, Button, Box, CircularProgress, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { toast, ToastContainer } from 'react-toastify'; // Import toast
+import 'react-toastify/dist/ReactToastify.css'; // Import toast CSS
 
 const EditIngredient = () => {
-  const { ingredientId } = useParams(); // Get the ingredientId from URL params
-  const navigate = useNavigate(); // useNavigate hook to navigate programmatically
+  const { ingredientId } = useParams();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [loadingUpdate, setLoadingUpdate] = useState(false); // Loading state for update
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -39,7 +41,7 @@ const EditIngredient = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoadingUpdate(true); // Set loading to true when the update process starts
+    setLoadingUpdate(true);
 
     const token = localStorage.getItem('token');
     const formData = new FormData();
@@ -49,7 +51,7 @@ const EditIngredient = () => {
     formData.append('units', units);
     formData.append('price', price);
     if (image) {
-      formData.append('image', image);  // Only append image if it's set
+      formData.append('image', image); // Append image if present
     }
 
     try {
@@ -61,14 +63,14 @@ const EditIngredient = () => {
       });
 
       if (response.data.message === 'Ingredient updated successfully') {
-        alert('Ingredient updated successfully');
-        navigate('/vendor/my-ingredients'); // Navigate to My Ingredients page after successful update
+        toast.success('Ingredient updated successfully!');
+        navigate('/vendor/my-ingredients'); // Navigate to My Ingredients page after update
       }
     } catch (err) {
       console.error('Error updating ingredient:', err);
-      alert('Error updating ingredient');
+      toast.error('Error updating ingredient');
     } finally {
-      setLoadingUpdate(false); // Set loading to false after the update process is done
+      setLoadingUpdate(false); // Set loading state to false after update
     }
   };
 
@@ -107,14 +109,18 @@ const EditIngredient = () => {
         margin="normal"
         required
       />
-      <TextField
-        label="Units"
-        fullWidth
-        value={units}
-        onChange={(e) => setUnits(e.target.value)}
-        margin="normal"
-        required
-      />
+      <FormControl fullWidth margin="normal" required>
+          <InputLabel>Units</InputLabel>
+          <Select
+            value={units}
+            onChange={(e) => setUnits(e.target.value)}
+          >
+            <MenuItem value="kg">kg</MenuItem>
+            <MenuItem value="g">g</MenuItem>
+            <MenuItem value="liter">Liter</MenuItem>
+            <MenuItem value="ml">ml</MenuItem>
+          </Select>
+            </FormControl>
       <TextField
         label="Price"
         type="number"
@@ -134,6 +140,8 @@ const EditIngredient = () => {
       <Button type="submit" variant="contained" sx={{ mt: 2 }}>
         {loadingUpdate ? <CircularProgress size={24} color="inherit" /> : 'Update Ingredient'}
       </Button>
+
+      <ToastContainer /> {/* ToastContainer to render the toasts */}
     </Box>
   );
 };

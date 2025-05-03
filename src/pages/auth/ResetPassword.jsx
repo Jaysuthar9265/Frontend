@@ -6,13 +6,15 @@ import {
   Paper,
   Typography,
   IconButton,
-  CircularProgress
+  CircularProgress,
+  InputAdornment,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate, useParams } from 'react-router-dom';
 import API from '../../services/api';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -23,6 +25,8 @@ const ResetPassword = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCpassword, setShowCpassword] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -39,34 +43,39 @@ const ResetPassword = () => {
   };
 
   const handleSubmit = async () => {
-
+    // Validate password length and characters
     if (newPassword.length < 8) {
-      return 'Password Must Be At Least 8 Characters Long.';
-    }
-
-    if (newPassword.length < 8 || !/[a-zA-Z]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
-      return 'Password Must Include Letters And Numbers.';
-    }
-
-    if (!newPassword || !confirmPassword) {
-      setErrorMessage('Please fill in all fields.');
+      toast.error('Password must be at least 8 characters long');
       return;
     }
-    if (newPassword !== confirmPassword) {
-      return 'Passwords Do Not Match.';
+
+    if (!/[a-zA-Z]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
+      toast.error('Password must include both letters and numbers');
+      return;
     }
 
-    
+    // Check if both passwords match
+    if (newPassword !== confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
+
+    // Ensure fields are not empty
+    if (!newPassword || !confirmPassword) {
+      setErrorMessage('Please fill in all fields.');
+      toast.error('Please fill in all fields.');
+      return;
+    }
 
     setLoading(true);
     try {
       const response = await API.post(`/auth/reset-password/${token}`, { newPassword });
-      toast.success(response.data.message);
+      toast.success(response.data.message); // Success toast
       setNewPassword('');
       setConfirmPassword('');
       navigate('/login');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Something went wrong');
+      toast.error(err.response?.data?.message || 'Something went wrong'); // Error toast
     } finally {
       setLoading(false);
     }
@@ -102,9 +111,22 @@ const ResetPassword = () => {
           margin="normal"
           name="newPassword"
           label="New Password"
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           value={newPassword}
           onChange={handleChange}
+          required
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
         <TextField
@@ -112,9 +134,22 @@ const ResetPassword = () => {
           margin="normal"
           name="confirmPassword"
           label="Confirm Password"
-          type="password"
+          type={showCpassword ? 'text' : 'password'}
           value={confirmPassword}
           onChange={handleChange}
+          required
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowCpassword(!showCpassword)}
+                  edge="end"
+                >
+                  {showCpassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
         <Box sx={{ position: 'relative' }}>
@@ -167,6 +202,8 @@ const ResetPassword = () => {
           Back to Login
         </Button>
       </Paper>
+
+      {/* Toast Notification Container */}
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
     </Box>
   );

@@ -6,19 +6,17 @@ import {
   Card,
   CardContent,
   CircularProgress,
-  Alert,
   Button,
-  Snackbar,
 } from '@mui/material';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify'; // Import toast
 import Footer from '../../components/footer/Footer';
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toastify
 
 const ClientIngredients = () => {
   const [ingredients, setIngredients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [snackOpen, setSnackOpen] = useState(false);
-  const [snackMsg, setSnackMsg] = useState('');
 
   const fetchAllIngredients = async () => {
     try {
@@ -27,6 +25,7 @@ const ClientIngredients = () => {
     } catch (err) {
       setError('Error loading ingredients');
       console.error(err);
+      toast.error('Error loading ingredients'); // Toast error for loading ingredients
     } finally {
       setLoading(false);
     }
@@ -47,12 +46,10 @@ const ClientIngredients = () => {
           },
         }
       );
-      setSnackMsg('Added to cart!');
-      setSnackOpen(true);
+      toast.success('Added to cart!'); // Toast success for adding to cart
     } catch (err) {
       console.error('Add to cart failed', err);
-      setSnackMsg('Login to add to cart');
-      setSnackOpen(true);
+      toast.error('Login to add to cart'); // Toast error for login
     }
   };
 
@@ -72,8 +69,8 @@ const ClientIngredients = () => {
         </Typography>
 
         {loading && <CircularProgress />}
-        {error && <Alert severity="error">{error}</Alert>}
-
+        {error && toast.error('Error loading ingredients')} {/* Error toast */}
+        
         <Grid container spacing={3}>
           {ingredients.map((item) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={item._id}>
@@ -122,15 +119,9 @@ const ClientIngredients = () => {
             </Grid>
           ))}
         </Grid>
+        <ToastContainer />
       </Box>
       <Footer />
-
-      <Snackbar
-        open={snackOpen}
-        autoHideDuration={3000}
-        onClose={() => setSnackOpen(false)}
-        message={snackMsg}
-      />
     </Box>
   );
 };

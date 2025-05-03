@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import {
-  TextField,
-  Button,
-  MenuItem,
-  Typography,
-  Box,
-  Paper,
-  IconButton,
-  CircularProgress,
+  TextField, Button, MenuItem, Typography, Box,
+  Paper, IconButton, CircularProgress, InputAdornment
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router-dom';
 import API from '../services/api';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const roles = ['client', 'chef', 'vendor'];
 
@@ -30,6 +27,8 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCpassword, setShowCpassword] = useState(false);
 
   const validate = (data = form) => {
     const { name, email, phone, password, confirmPassword, role } = data;
@@ -46,14 +45,13 @@ const Signup = () => {
       return 'Password Must Be At Least 8 Characters Long.';
     }
 
-    if (password.length < 8 || !/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) {
+    if (!/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) {
       return 'Password Must Include Letters And Numbers.';
     }
 
-    if (phone.length < 10 || !/[0-9]/.test(phone)) {
+    if (phone.length < 10 || !/^[0-9]+$/.test(phone)) {
       return 'Please Enter Valid Phone Number.';
     }
-
 
     return '';
   };
@@ -80,10 +78,10 @@ const Signup = () => {
     setLoading(true);
     try {
       const res = await API.post('/auth/register', submitData);
-      alert(res.data.message);
+      toast.success(res.data.message || 'Registration successful!');
       navigate('/login');
     } catch (err) {
-      alert(err.response?.data?.message || 'Signup failed');
+      toast.error(err.response?.data?.message || 'Signup failed');
     } finally {
       setLoading(false);
     }
@@ -116,28 +114,48 @@ const Signup = () => {
         <form onSubmit={handleSubmit}>
           <TextField fullWidth margin="normal" name="name" label="Name" onChange={handleChange} />
           <TextField fullWidth margin="normal" name="email" label="Email" onChange={handleChange} />
-          <TextField
-            fullWidth
-            margin="normal"
-            name="phone"
-            label="Phone"
-            onChange={handleChange}
-          />
+          <TextField fullWidth margin="normal" name="phone" label="Phone" onChange={handleChange} />
           <TextField
             fullWidth
             margin="normal"
             name="password"
             label="Password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             onChange={handleChange}
+            required
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             fullWidth
             margin="normal"
             name="confirmPassword"
             label="Confirm Password"
-            type="password"
+            type={showCpassword ? 'text' : 'password'}
             onChange={handleChange}
+            required
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowCpassword(!showCpassword)}
+                    edge="end"
+                  >
+                    {showCpassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             fullWidth
@@ -206,7 +224,10 @@ const Signup = () => {
             Already have an account? Login
           </Button>
         </form>
+
+        {/* Toast Container */}
       </Paper>
+        <ToastContainer position="top-right" autoClose={3000} />
     </Box>
   );
 };

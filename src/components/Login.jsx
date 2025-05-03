@@ -1,10 +1,15 @@
 import React, { useState, useContext } from 'react';
-import { TextField, Button, Typography, Box, Paper, IconButton } from '@mui/material';
+import {
+  TextField, Button, Typography, Box, Paper,
+  IconButton, InputAdornment, CircularProgress
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router-dom';
 import API from '../services/api';
 import { UserContext } from '../context/UserContext';
-import { CircularProgress } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -13,11 +18,12 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const { login } = useContext(UserContext);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     if (form.email && form.password) {
-      setErrorMessage(''); // Clear error when input is filled
+      setErrorMessage('');
     }
   };
 
@@ -37,12 +43,11 @@ const Login = () => {
         token: res.data.token,
       };
       login(userData);
-      alert('Login Successful ✅');
+      toast.success('Login Successful ✅');
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('role', res.data.user.role);
       localStorage.setItem('name', res.data.user.name);
       localStorage.setItem('user', JSON.stringify(userData));
-
 
       const role = res.data.user.role;
       if (role === 'admin') navigate('/admin/dashboard');
@@ -51,9 +56,9 @@ const Login = () => {
       else if (role === 'vendor') navigate('/vendor/dashboard');
       else navigate('/');
     } catch (err) {
-      alert(err.response?.data?.message || 'Login failed');
+      toast.error(err.response?.data?.message || 'Login failed');
     } finally {
-      setLoading(false); // Set loading to false after the request finishes
+      setLoading(false);
     }
   };
 
@@ -92,9 +97,21 @@ const Login = () => {
             margin="normal"
             name="password"
             label="Password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             onChange={handleChange}
             required
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
 
           <Box sx={{ position: 'relative' }}>
@@ -105,7 +122,7 @@ const Login = () => {
               sx={{
                 marginTop: 2,
                 transition: 'transform 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55)',
-                transform: isHovered && (!form.email || !form.password) ? 'translateY(200px)' : 'none', // Move the button outside
+                transform: isHovered && (!form.email || !form.password) ? 'translateY(200px)' : 'none',
                 position: 'relative',
                 zIndex: 1,
                 marginBottom: '10px',
@@ -125,12 +142,10 @@ const Login = () => {
               {loading ? <CircularProgress size={24} /> : 'Login'}
             </Button>
 
-            {/* Error Message Box */}
             {errorMessage && (
               <Typography
                 sx={{
                   position: 'absolute',
-                  
                   color: 'red',
                   fontSize: '14px',
                   fontWeight: 'bold',
@@ -152,6 +167,9 @@ const Login = () => {
           Don't have an account? Register
         </Button>
       </Paper>
+
+      {/* Toast Notifications */}
+      <ToastContainer position="top-right" autoClose={3000} />
     </Box>
   );
 };

@@ -36,6 +36,13 @@ const Footer = () => {
             <TextField
               fullWidth
               variant="filled"
+              label="Your Name"
+              sx={{ mb: 2, bgcolor: 'white', borderRadius: 1 }}
+              InputProps={{ disableUnderline: true }}
+            />
+            <TextField
+              fullWidth
+              variant="filled"
               label="Your Email"
               sx={{ mb: 2, bgcolor: 'white', borderRadius: 1 }}
               InputProps={{ disableUnderline: true }}

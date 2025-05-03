@@ -14,6 +14,7 @@ import API from '../../services/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -29,17 +30,18 @@ const ForgotPassword = () => {
   const handleSubmit = async () => {
     if (!email) {
       setErrorMessage('Please enter your email address.');
+      toast.error('Please enter your email address.');
       return;
     }
 
     setLoading(true);
     try {
       const response = await API.post('/auth/forgot-password', { email });
-      toast.success(response.data.message);
+      toast.success(response.data.message); // Display success toast
       setEmail('');
       console.log("Password reset link: ", response.data.resetLink); 
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Something went wrong');
+      toast.error(err.response?.data?.message || 'Something went wrong'); // Display error toast
     } finally {
       setLoading(false);
     }
@@ -128,6 +130,8 @@ const ForgotPassword = () => {
           Back to Login
         </Button>
       </Paper>
+
+      {/* Toast Notification Container */}
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
     </Box>
   );
