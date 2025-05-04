@@ -7,7 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router-dom';
 import API from '../services/api';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const roles = ['client', 'chef', 'vendor'];
@@ -225,9 +225,7 @@ const Signup = () => {
           </Button>
         </form>
 
-        {/* Toast Container */}
       </Paper>
-        <ToastContainer position="top-right" autoClose={3000} />
     </Box>
   );
 };

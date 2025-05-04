@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import API from '../../services/api';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AddAdmin = () => {
@@ -75,8 +75,6 @@ const AddAdmin = () => {
         </form>
       </Container>
 
-      {/* Toast Container */}
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
     </Box>
   );
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, Typography, Card, CardContent, Grid, Button, CardMedia, CardActions } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify'; // Import toast
+import { toast } from 'react-toastify'; // Import toast
 import 'react-toastify/dist/ReactToastify.css'; // Import toast CSS
 
 const MyIngredients = () => {
@@ -111,7 +111,6 @@ const MyIngredients = () => {
         </Grid>
       )}
 
-      <ToastContainer /> {/* ToastContainer to render the toasts */}
     </Box>
   );
 };

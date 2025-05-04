@@ -12,7 +12,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate, useParams } from 'react-router-dom';
 import API from '../../services/api';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -203,8 +203,6 @@ const ResetPassword = () => {
         </Button>
       </Paper>
 
-      {/* Toast Notification Container */}
-      <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
     </Box>
   );
 };

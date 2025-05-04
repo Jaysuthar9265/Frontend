@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import API from '../services/api';
 import { UserContext } from '../context/UserContext';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
@@ -168,8 +168,6 @@ const Login = () => {
         </Button>
       </Paper>
 
-      {/* Toast Notifications */}
-      <ToastContainer position="top-right" autoClose={3000} />
     </Box>
   );
 };

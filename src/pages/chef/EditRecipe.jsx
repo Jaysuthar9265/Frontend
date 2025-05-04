@@ -12,12 +12,12 @@ import {
   Box,
   CircularProgress,
 } from '@mui/material';
-import { toast, ToastContainer } from 'react-toastify'; // Import the toast method
+import { toast } from 'react-toastify'; // Import the toast method
 import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toasts
 
 const categories = [
   'Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snacks', 'Appetizers', 'Drinks',
-  'Vegan', 'Gluten-Free', 'Healthy', 'Quick & Easy', 'Kid-Friendly', 'Holiday',
+  'Vegan', 'Gluten-Free', 'Healthy', 'Salads', 'Quick & Easy', 'Kid-Friendly', 'Holiday',
   'BBQ & Grilling', 'Indian', 'Chinese', 'Italian', 'Mexican', 'French',
   'Japanese', 'Mediterranean',
 ];
@@ -125,7 +125,6 @@ const EditRecipe = () => {
             </Box>
           </form>
         </Paper>
-        <ToastContainer />
       </Container>
     </Box>
   );

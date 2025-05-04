@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { TextField, Button, Box, InputLabel, MenuItem, FormControl, Select, CircularProgress, Typography } from '@mui/material';
-import { toast, ToastContainer } from 'react-toastify'; // Import toast
+import { toast } from 'react-toastify'; // Import toast
 import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
 
 const AddIngredient = () => {
@@ -112,7 +112,6 @@ const AddIngredient = () => {
         {loading ? <CircularProgress size={24} color="inherit" /> : 'Add Ingredient'}
       </Button>
 
-      <ToastContainer />
     </Box>
   );
 };

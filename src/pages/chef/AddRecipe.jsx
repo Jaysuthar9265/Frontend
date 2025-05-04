@@ -1,4 +1,3 @@
-// src/pages/chef/AddRecipe.jsx
 import React, { useState } from 'react';
 import {
   Box,
@@ -7,16 +6,15 @@ import {
   Typography,
   MenuItem,
   Paper,
-  Snackbar,
-  Alert,
   CircularProgress,
 } from '@mui/material';
 import axios from 'axios';
 import { toast } from 'react-toastify'; // Import toast for notifications
+import 'react-toastify/dist/ReactToastify.css';
 
 const categories = [
   'Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snacks', 'Appetizers', 'Drinks',
-  'Vegan', 'Gluten-Free', 'Healthy', 'Quick & Easy', 'Kid-Friendly', 'Holiday',
+  'Vegan', 'Gluten-Free', 'Healthy', 'Salads', 'Quick & Easy', 'Kid-Friendly', 'Holiday',
   'BBQ & Grilling', 'Indian', 'Chinese', 'Italian', 'Mexican', 'French',
   'Japanese', 'Mediterranean',
 ];
@@ -29,12 +27,12 @@ const AddRecipe = () => {
   const [instructions, setInstructions] = useState('');
   const [category, setCategory] = useState('');
   const [image, setImage] = useState(null);
-  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     const token = localStorage.getItem('token');
     const formData = new FormData();
     formData.append('title', title);
@@ -54,8 +52,7 @@ const AddRecipe = () => {
       });
 
       if (res.status === 201) {
-        setSuccess(true);
-        toast.success('Recipe added successfully!'); // Success toast
+        toast.success('🎉 Recipe added successfully!');
         setTitle('');
         setDescription('');
         setIngredients('');
@@ -66,7 +63,7 @@ const AddRecipe = () => {
       }
     } catch (err) {
       console.error('Error adding recipe:', err);
-      toast.error('Failed to add recipe. Please try again.'); // Error toast
+      toast.error('❌ Failed to add recipe. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -74,8 +71,8 @@ const AddRecipe = () => {
 
   return (
     <Box sx={{ backgroundImage: 'url("/images/bg.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-      <Box minHeight={'100vh'} p={4} maxWidth={600} margin="auto">
-        <Paper elevation={3} sx={{ bgcolor:'rgba(255, 255, 255, 0.62)', p: 4 }}>
+      <Box minHeight="100vh" p={4} maxWidth={600} margin="auto">
+        <Paper elevation={3} sx={{ bgcolor: 'rgba(255, 255, 255, 0.62)', p: 4 }}>
           <Typography variant="h5" gutterBottom>Add New Recipe</Typography>
           <form onSubmit={handleSubmit}>
             <TextField label="Title" fullWidth required margin="normal" value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -96,12 +93,6 @@ const AddRecipe = () => {
             </Box>
           </form>
         </Paper>
-
-        <Snackbar open={success} autoHideDuration={4000} onClose={() => setSuccess(false)}>
-          <Alert onClose={() => setSuccess(false)} severity="success" sx={{ width: '100%' }}>
-            Recipe added successfully!
-          </Alert>
-        </Snackbar>
       </Box>
     </Box>
   );

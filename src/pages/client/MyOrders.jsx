@@ -14,7 +14,7 @@ import {
   DialogActions,
   CircularProgress
 } from '@mui/material';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const MyOrders = () => {
@@ -76,7 +76,6 @@ const MyOrders = () => {
       backgroundPosition: 'center',
       minHeight: '150vh'
     }}>
-      <ToastContainer />
       <div style={{ padding: '20px' }}>
         <Typography variant="h4" gutterBottom>My Orders</Typography>
 

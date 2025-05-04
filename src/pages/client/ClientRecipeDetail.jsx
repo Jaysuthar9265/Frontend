@@ -11,7 +11,9 @@ import {
   Paper,
   Button,
   Divider,
-  Fade
+  Fade,
+  TextField,
+  Rating
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
@@ -19,7 +21,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { ToastContainer, toast } from 'react-toastify'; // Import react-toastify components
+import { toast } from 'react-toastify'; // Import react-toastify components
 import 'react-toastify/dist/ReactToastify.css'; // Import styles
 
 const ClientRecipeDetail = () => {
@@ -29,6 +31,12 @@ const ClientRecipeDetail = () => {
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
   const [favoriteEntry, setFavoriteEntry] = useState(null);
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [newFeedback, setNewFeedback] = useState({
+    name: '',
+    rating: 0,
+    message: '',
+  });
 
   // Function to fetch the recipe details
   useEffect(() => {
@@ -45,6 +53,22 @@ const ClientRecipeDetail = () => {
 
     fetchRecipe();
   }, [id]);
+
+  useEffect(() => {
+    const fetchFeedbacks = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/feedback/${id}`);
+        setFeedbacks(response.data);
+      } catch (err) {
+        console.error('Error fetching feedbacks:', err);
+      }
+    };
+  
+    if (recipe) {
+      fetchFeedbacks();
+    }
+  }, [recipe, id]);
+  
 
   // Check if the recipe is already in favorites
   useEffect(() => {
@@ -74,6 +98,9 @@ const ClientRecipeDetail = () => {
     if (recipe) {
       checkFavorite();
     }
+
+
+    
   }, [recipe]);
 
   // Function to handle adding the recipe to favorites
@@ -118,6 +145,32 @@ const ClientRecipeDetail = () => {
       toast.error('Failed to remove recipe from favorites.'); // Toast notification for failure
     }
   };
+
+  // Function to handle submitting feedback
+  const handleFeedbackSubmit = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/feedback/${recipe._id}`,
+        {
+          name: newFeedback.name,
+          rating: newFeedback.rating,
+          message: newFeedback.message,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+  
+      setFeedbacks([response.data, ...feedbacks]);
+      setNewFeedback({ name: '', rating: 0, message: '' });
+      toast.success('Feedback submitted successfully!');
+    } catch (err) {
+      console.error('Error submitting feedback:', err);
+      toast.error('Failed to submit feedback.');
+    }
+  };
+  
 
   // Loader while fetching recipe
   if (loading)
@@ -176,8 +229,8 @@ const ClientRecipeDetail = () => {
                           boxShadow: 3,
                           transition: 'transform 0.4s ease',
                           '&:hover': {
-                            transform: 'scale(1.03)'
-                          }
+                            transform: 'scale(1.03)',
+                          },
                         }}
                       />
                       {/* Add to Favorites or Remove from Favorites Button */}
@@ -188,7 +241,7 @@ const ClientRecipeDetail = () => {
                             sx={{
                               bgcolor: 'white',
                               '&:hover': { bgcolor: 'grey.200' },
-                              boxShadow: 2
+                              boxShadow: 2,
                             }}
                           >
                             {isFavorite ? (
@@ -240,7 +293,7 @@ const ClientRecipeDetail = () => {
                         <Box component="ul" sx={{ pl: 5 }}>
                           {recipe.ingredients?.map((ingredient, index) => (
                             <li key={index}>
-                              <Typography sx={{ pb: 2 }} variant="body1" color="text.secondary">
+                              <Typography sx={{ fontSize: '16px', fontWeight: 400, lineHeight: 2 }}>
                                 {ingredient}
                               </Typography>
                             </li>
@@ -251,33 +304,81 @@ const ClientRecipeDetail = () => {
                   </Box>
 
                   {/* Instructions Right */}
-                  <Box sx={{ width: { xs: '100%', md: '48%', xl: '47%' } }}>
+                  <Box sx={{ width: { xs: '100%', md: '48%', xl: '50%' } }}>
                     <Grid item xs={12} md={6}>
-                      <Paper elevation={2} sx={{ width: '100%', minHeight: 600, p: 3, borderRadius: 3, bgcolor: 'grey.100' }}>
+                      <Paper elevation={2} sx={{ width: 'auto', minHeight: 600, p: 3, borderRadius: 3 }}>
                         <Typography textAlign={'center'} variant="h5" fontWeight="bold" gutterBottom color="primary">
                           Instructions
                         </Typography>
-                        <Box component="ol" sx={{ pl: 5 }}>
-                          {recipe.instructions?.map((instruction, index) => (
-                            <li key={index} style={{ marginBottom: '12px' }}>
-                              <Typography variant="body1" color="text.secondary">
-                                {instruction}
-                              </Typography>
-                            </li>
-                          ))}
+                        <Box sx={{ fontSize: '16px', fontWeight: 400, lineHeight: 2 }}>
+                          {recipe.instructions}
                         </Box>
                       </Paper>
                     </Grid>
                   </Box>
                 </Grid>
               </Paper>
+
+              {/* Feedback Section */}
+              <Paper elevation={3} sx={{ mt: 4, p: 3, borderRadius: 3 }}>
+                <Typography variant="h5" fontWeight="bold" color="primary.main" gutterBottom>
+                  Leave a Feedback
+                </Typography>
+
+                <TextField
+                  label="Your Name"
+                  variant="outlined"
+                  fullWidth
+                  value={newFeedback.name}
+                  onChange={(e) => setNewFeedback({ ...newFeedback, name: e.target.value })}
+                  sx={{ mb: 2 }}
+                />
+
+                <Rating
+                  name="rating"
+                  value={newFeedback.rating}
+                  onChange={(event, newValue) => setNewFeedback({ ...newFeedback, rating: newValue })}
+                  sx={{ mb: 2 }}
+                />
+
+                <TextField
+                  label="Your Message"
+                  variant="outlined"
+                  fullWidth
+                  multiline
+                  rows={4}
+                  value={newFeedback.message}
+                  onChange={(e) => setNewFeedback({ ...newFeedback, message: e.target.value })}
+                  sx={{ mb: 2 }}
+                />
+
+                <Button variant="contained" onClick={handleFeedbackSubmit} sx={{ width: '100%' }}>
+                  Submit Feedback
+                </Button>
+
+                {/* Display feedbacks */}
+                <Box sx={{ mt: 4 }}>
+                  <Typography variant="h6" color="primary" fontWeight="bold">
+                    Feedbacks:
+                  </Typography>
+                  {feedbacks.map((feedback, index) => (
+                    <Box key={index} sx={{ mt: 2, mb: 2 }}>
+                      <Typography variant="body1" fontWeight="bold">
+                        {feedback.name}
+                      </Typography>
+                      <Rating value={feedback.rating} readOnly />
+                      <Typography variant="body2" sx={{ mt: 1 }}>
+                        {feedback.message}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </Paper>
             </Box>
           </Box>
         </Fade>
       </Container>
       <Footer />
-      {/* Toast Container */}
-      <ToastContainer position="top-right" autoClose={5000} newestOnTop closeButton />
     </Box>
   );
 };

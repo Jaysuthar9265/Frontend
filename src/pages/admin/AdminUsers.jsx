@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { Edit, Delete, Search } from '@mui/icons-material';
 import API from '../../services/api';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
@@ -167,7 +167,6 @@ const AdminUsers = () => {
             </Button>
           </DialogActions>
         </Dialog>
-        <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
       </Container>
     </Box>
   );

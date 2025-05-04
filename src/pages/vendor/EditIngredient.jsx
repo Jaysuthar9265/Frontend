@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { TextField, Button, Box, CircularProgress, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import { toast, ToastContainer } from 'react-toastify'; // Import toast
+import { toast } from 'react-toastify'; // Import toast
 import 'react-toastify/dist/ReactToastify.css'; // Import toast CSS
 
 const EditIngredient = () => {
@@ -141,7 +141,6 @@ const EditIngredient = () => {
         {loadingUpdate ? <CircularProgress size={24} color="inherit" /> : 'Update Ingredient'}
       </Button>
 
-      <ToastContainer /> {/* ToastContainer to render the toasts */}
     </Box>
   );
 };

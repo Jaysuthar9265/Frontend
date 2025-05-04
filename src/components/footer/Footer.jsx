@@ -1,7 +1,17 @@
-// src/components/Footer.jsx
-import React from 'react';
-import { Box, Typography, TextField, Button, Grid, IconButton } from '@mui/material';
+import React, { useState } from 'react';
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  IconButton,
+  CircularProgress,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import PinterestIcon from '@mui/icons-material/Pinterest';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -12,6 +22,28 @@ const Footer = () => {
 
   const handleNavigation = (path) => {
     navigate(path);
+  };
+
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await axios.post('http://localhost:5000/api/contact', formData);
+      toast.success('Message sent successfully!');
+      setFormData({ name: '', email: '', message: '' });
+    } catch (err) {
+      console.error('Contact form error:', err);
+      toast.error('Failed to send message.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -26,17 +58,21 @@ const Footer = () => {
         mt: 2,
       }}
     >
+
       <Grid container spacing={'10%'} justifyContent="center">
-        {/* Left: Contact Us Form */}
-        <Grid sx={{ p: 3, m: 2}} item xs={12} md={6}>
+        {/* Contact Us Form */}
+        <Grid sx={{ p: 3, m: 2 }} item xs={12} md={6}>
           <Typography variant="h6" sx={{ mb: 2, mt: 2 }}>
             Contact Us
           </Typography>
-          <Box component="form" noValidate autoComplete="off">
+          <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off">
             <TextField
               fullWidth
               variant="filled"
               label="Your Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
               sx={{ mb: 2, bgcolor: 'white', borderRadius: 1 }}
               InputProps={{ disableUnderline: true }}
             />
@@ -44,6 +80,9 @@ const Footer = () => {
               fullWidth
               variant="filled"
               label="Your Email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               sx={{ mb: 2, bgcolor: 'white', borderRadius: 1 }}
               InputProps={{ disableUnderline: true }}
             />
@@ -51,25 +90,33 @@ const Footer = () => {
               fullWidth
               variant="filled"
               label="Your Message"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
               multiline
               rows={4}
               sx={{ mb: 2, bgcolor: 'white', borderRadius: 1 }}
               InputProps={{ disableUnderline: true }}
             />
-            <Button fullWidth variant="contained" color="primary" sx={{ bgcolor:'rgba(255, 255, 255, 0.29)', borderRadius: '5px' }}>
-              Send
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              disabled={loading}
+              sx={{ bgcolor: 'rgba(255, 255, 255, 0.29)', borderRadius: '5px' }}
+            >
+              {loading ? <CircularProgress size={24} color="inherit" /> : 'Send'}
             </Button>
           </Box>
         </Grid>
 
-        {/* Right: Quick Links in 3 columns */}
+        {/* Quick Links and Social Icons */}
         <Grid sx={{ p: 3, m: 2 }} item xs={12} md={6}>
           <Typography variant="h6" sx={{ mb: 2, mt: 2 }}>
             Quick Links
           </Typography>
-
           <Grid container spacing={2}>
-            {/* First Column */}
             <Grid item xs={4}>
               <Button onClick={() => handleNavigation('/')} variant="text" color="inherit" fullWidth>
                 Home
@@ -78,8 +125,6 @@ const Footer = () => {
                 About
               </Button>
             </Grid>
-
-            {/* Second Column */}
             <Grid item xs={4}>
               <Button onClick={() => handleNavigation('/recipes')} variant="text" color="inherit" fullWidth>
                 Recipes
@@ -88,8 +133,6 @@ const Footer = () => {
                 Chefs
               </Button>
             </Grid>
-
-            {/* Third Column */}
             <Grid item xs={4}>
               <Button onClick={() => handleNavigation('/vendors')} variant="text" color="inherit" fullWidth>
                 Vendors
@@ -100,7 +143,6 @@ const Footer = () => {
             </Grid>
           </Grid>
 
-          {/* Social Media Icons */}
           <Box sx={{ mt: 5 }}>
             <IconButton color="inherit" href="https://youtube.com" target="_blank">
               <YouTubeIcon fontSize="large" />
@@ -115,15 +157,12 @@ const Footer = () => {
               <FacebookIcon fontSize="large" />
             </IconButton>
           </Box>
-          <Typography variant="body2" sx={{ mt: 5 }}>
-        &copy; {new Date().getFullYear()} AutoChef. All rights reserved.
-      </Typography>
 
+          <Typography variant="body2" sx={{ mt: 5 }}>
+            &copy; {new Date().getFullYear()} AutoChef. All rights reserved.
+          </Typography>
         </Grid>
       </Grid>
-
-      {/* Bottom Copyright */}
-      
     </Box>
   );
 };

@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify'; // Import toast
+import { toast } from 'react-toastify'; // Import toast
 
 const ClientFavorites = () => {
   const [favorites, setFavorites] = useState([]);
@@ -116,7 +116,6 @@ const ClientFavorites = () => {
             ))}
           </Grid>
         )}
-        <ToastContainer />
       </Container>
     </Box>
   );

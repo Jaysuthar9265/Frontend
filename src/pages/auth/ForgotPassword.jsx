@@ -11,7 +11,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router-dom';
 import API from '../../services/api';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -131,8 +131,6 @@ const ForgotPassword = () => {
         </Button>
       </Paper>
 
-      {/* Toast Notification Container */}
-      <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
     </Box>
   );
 };

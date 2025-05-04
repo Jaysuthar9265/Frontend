@@ -9,7 +9,7 @@ import {
   Button,
 } from '@mui/material';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify'; // Import toast
+import { toast } from 'react-toastify'; // Import toast
 import Footer from '../../components/footer/Footer';
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toastify
 
@@ -119,7 +119,6 @@ const ClientIngredients = () => {
             </Grid>
           ))}
         </Grid>
-        <ToastContainer />
       </Box>
       <Footer />
     </Box>
