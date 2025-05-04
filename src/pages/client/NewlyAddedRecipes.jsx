@@ -8,32 +8,31 @@ import {
   Rating,
   Grid,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { useNavigate } from 'react-router-dom';
 
-const TopRatedRecipes = () => {
-  const [topRatedRecipes, setTopRatedRecipes] = useState([]);
+const NewlyAddedCarousel = () => {
+  const [recipes, setRecipes] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchTopRatedRecipes = async () => {
+    const fetchNewRecipes = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/recipes/top-rated");
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const res = await fetch('http://localhost:5000/api/recipes/newly-added');
         const data = await res.json();
         if (Array.isArray(data)) {
-          setTopRatedRecipes(data.slice(0, 20)); // limit to 20
+          setRecipes(data.slice(0, 20));
         }
       } catch (err) {
-        console.error('Error fetching top-rated recipes:', err.message);
+        console.error('Failed to fetch recipes:', err);
       }
     };
 
-    fetchTopRatedRecipes();
+    fetchNewRecipes();
   }, []);
 
   const handleCardClick = (id) => {
@@ -41,25 +40,25 @@ const TopRatedRecipes = () => {
     window.location.reload();
   };
 
-  // Split into groups of 6
   const chunked = [];
-  for (let i = 0; i < topRatedRecipes.length; i += 6) {
-    chunked.push(topRatedRecipes.slice(i, i + 6));
+  for (let i = 0; i < recipes.length; i += 6) {
+    chunked.push(recipes.slice(i, i + 6));
   }
 
   return (
     <Box sx={{ py: 6 }}>
       <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 3, textAlign: 'left' }}>
-        Top Trending Recipes
+        Newly Added Recipes
       </Typography>
 
       <Swiper
         modules={[Navigation, Pagination]}
         navigation={true}
         pagination={{ clickable: true }}
+        spaceBetween={10}
         slidesPerView={1}
         loop={true}
-        style={{ paddingBottom: '30px' }}
+        style={{ paddingBottom: '30px' }} // optional spacing under dots
       >
         {chunked.map((group, index) => (
           <SwiperSlide key={index}>
@@ -70,6 +69,7 @@ const TopRatedRecipes = () => {
                     onClick={() => handleCardClick(recipe._id)}
                     sx={{
                       mb:3,
+                      cursor: 'pointer',
                       height: 350,
                       width: 262,
                       display: 'flex',
@@ -77,11 +77,8 @@ const TopRatedRecipes = () => {
                       borderRadius: 3,
                       boxShadow: 3,
                       overflow: 'hidden',
-                      cursor: 'pointer',
                       transition: 'transform 0.3s ease',
-                      '&:hover': {
-                        transform: 'scale(1.05)',
-                      },
+                      '&:hover': { transform: 'scale(1.05)' },
                     }}
                   >
                     <CardMedia
@@ -99,10 +96,7 @@ const TopRatedRecipes = () => {
                         flexGrow: 1,
                       }}
                     >
-                      <Typography
-                        variant="h6"
-                        sx={{ fontWeight: 'bold', textAlign: 'center' }}
-                      >
+                      <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
                         {recipe.title}
                       </Typography>
                       <Rating
@@ -125,4 +119,4 @@ const TopRatedRecipes = () => {
   );
 };
 
-export default TopRatedRecipes;
+export default NewlyAddedCarousel;

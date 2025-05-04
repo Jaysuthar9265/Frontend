@@ -8,10 +8,16 @@ import {
   CardMedia,
   CardContent,
   Stack,
+  Rating,
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import FeaturedCarousel from '../../components/FeaturedCarousel';
 import Footer from '../../components/footer/Footer';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const featuredContent = {
   bigCard: {
@@ -41,7 +47,34 @@ const ClientDashboard = () => {
   const handleCategoryClick = (category) => {
     navigate(`/client/recipes?category=${encodeURIComponent(category)}`);
   };
+  const chunked = [];
+  for (let i = 0; i < topRatedRecipes.length; i += 5) {
+    chunked.push(topRatedRecipes.slice(i, i + 5));
+  }
 
+  const [recipes, setRecipes] = useState([]);
+
+  useEffect(() => {
+    const fetchNewRecipes = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/recipes/newly-added');
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setRecipes(data.slice(0, 20));
+        }
+      } catch (err) {
+        console.error('Failed to fetch recipes:', err);
+      }
+    };
+
+    fetchNewRecipes();
+  }, []);
+
+  const chunked1 = [];
+  for (let i = 0; i < recipes.length; i += 5) {
+    chunked1.push(recipes.slice(i, i + 5));
+  }
+  
   useEffect(() => {
     const fetchTopRatedRecipes = async () => {
       try {
@@ -106,34 +139,81 @@ const ClientDashboard = () => {
 
         {/* Top Trending Recipes */}
 
-        <Box sx={{ mb: 6 }}>
-          <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 3, textAlign: 'left' }}>Top Trending Recipes</Typography>
-          <Grid container spacing={3} justifyContent="center">
-            {topRatedRecipes.slice(0, 6).map((recipe) => (
-              <Grid item xs={12} sm={6} md={4} key={recipe._id}>
-                <Link to={`/client/recipes/${recipe._id}`} style={{ textDecoration: 'none' }}> {/* Wrap card with Link */}
-                  <Card sx={{ height: 350, width: 262, display: 'flex', flexDirection: 'column', borderRadius: 3, boxShadow: 3, overflow: 'hidden' }}>
+      <Box sx={{ py: 6, mx:-10 }}>
+      <Typography variant="h4" sx={{ ml:10, fontWeight: 'bold', mb: 3, textAlign: 'left' }}>
+        Top Trending Recipes
+      </Typography>
+
+      <Swiper
+        modules={[Navigation, Pagination]}
+        navigation={true}
+        pagination={{ clickable: true }}
+        slidesPerView={1}
+        loop={true}
+        style={{ paddingBottom: '30px' }}
+      >
+        {chunked.map((group, index) => (
+          <SwiperSlide key={index}>
+            <Grid container spacing={3} justifyContent="center">
+              {group.map((recipe) => (
+                <Grid sx={{ py:3 }} item key={recipe._id}>
+                  <Link to={`/client/recipes/${recipe._id}`} style={{ textDecoration: 'none' }}>
+                  <Card
+                    sx={{
+                      mb:3,
+                      height: 350,
+                      width: 262,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      borderRadius: 3,
+                      boxShadow: 3,
+                      overflow: 'hidden',
+                      cursor: 'pointer',
+                      transition: 'transform 0.3s ease',
+                      '&:hover': {
+                        transform: 'scale(1.05)',
+                      },
+                    }}
+                  >
                     <CardMedia
                       component="img"
                       height="200"
-                      image={`${recipe.image}`}
+                      image={recipe.image}
                       alt={recipe.title}
                     />
-                    <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
+                    <CardContent
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flexGrow: 1,
+                      }}
+                    >
+                      <Typography
+                        variant="h6"
+                        sx={{ fontWeight: 'bold', textAlign: 'center' }}
+                      >
                         {recipe.title}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
-                        Rating: {recipe.avgRating} / 5
-                      </Typography>
+                      <Rating
+                        name="read-only"
+                        value={Number(recipe.avgRating) || 0}
+                        precision={0.5}
+                        readOnly
+                        size="small"
+                        sx={{ mt: 'auto' }}
+                      />
                     </CardContent>
                   </Card>
-                </Link>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-
+                  </Link>
+                </Grid>
+              ))}
+            </Grid>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </Box>
         {/* Featured Content */}
         <Box sx={{ mb: 6 }}>
           <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 3, textAlign: 'left' }}>Featured Content</Typography>
@@ -226,6 +306,78 @@ const ClientDashboard = () => {
             </Grid>
           </Grid>
         </Box>
+        <Box sx={{ py: 3, mx:-10 }}>
+      <Box>
+      <Typography variant="h4" sx={{ mx:10, fontWeight: 'bold', mb: 3, textAlign: 'left' }}>
+        Newly Added Recipes
+      </Typography>
+      </Box>
+      <Swiper
+        modules={[Navigation, Pagination]}
+        navigation={true}
+        pagination={{ clickable: true }}
+        spaceBetween={10}
+        slidesPerView={1}
+        loop={true}
+        style={{ paddingBottom: '30px' }} // optional spacing under dots
+      >
+        {chunked1.map((group, index) => (
+          <SwiperSlide key={index}>
+            <Grid container spacing={2} justifyContent="center">
+              {group.map((recipe) => (
+                <Grid sx={{ py:3 }} item key={recipe._id}>
+                  <Link to={`/client/recipes/${recipe._id}`} style={{ textDecoration: 'none' }}>
+                  <Card
+                    sx={{
+                      mb:3,
+                      cursor: 'pointer',
+                      height: 350,
+                      width: 262,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      borderRadius: 3,
+                      boxShadow: 3,
+                      overflow: 'hidden',
+                      transition: 'transform 0.3s ease',
+                      '&:hover': { transform: 'scale(1.05)' },
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      height="200"
+                      image={recipe.image}
+                      alt={recipe.title}
+                    />
+                    <CardContent
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flexGrow: 1,
+                      }}
+                    >
+                      <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
+                        {recipe.title}
+                      </Typography>
+                      <Rating
+                        name="read-only"
+                        value={Number(recipe.avgRating) || 0}
+                        precision={0.5}
+                        readOnly
+                        size="small"
+                        sx={{ mt: 'auto' }}
+                      />
+                    </CardContent>
+                  </Card>
+                  </Link>
+                </Grid>
+              ))}
+            </Grid>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </Box>
       </Box>
       <Footer />
     </Box>

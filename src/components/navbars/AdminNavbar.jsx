@@ -22,6 +22,8 @@ const AdminNavbar = () => {
           <Button component={Link} to="/admin/dashboard" sx={buttonStyle}>Dashboard</Button>
           <Button component={Link} to="/admin/users" sx={buttonStyle}>Users</Button>
           <Button component={Link} to="/admin/add-admin" sx={buttonStyle}>Add Admin</Button>
+          <Button component={Link} to="/admin/manage-recipes" sx={buttonStyle}>Recipes</Button>
+          <Button component={Link} to="/admin/manage-ingredients" sx={buttonStyle}>Ingredients</Button>
           <Button onClick={handleLogout} sx={buttonStyle1}>Logout</Button>
         </Box>
       </Toolbar>

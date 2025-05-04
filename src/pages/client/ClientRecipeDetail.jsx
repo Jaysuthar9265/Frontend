@@ -21,8 +21,10 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { toast } from 'react-toastify'; // Import react-toastify components
-import 'react-toastify/dist/ReactToastify.css'; // Import styles
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import TopRatedRecipes from './TopRatedRecipes';
+import NewlyAddedRecipes from './NewlyAddedRecipes';
 
 const ClientRecipeDetail = () => {
   const { id } = useParams();
@@ -58,7 +60,18 @@ const ClientRecipeDetail = () => {
     const fetchFeedbacks = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/feedback/${id}`);
-        setFeedbacks(response.data);
+        const feedbackList = response.data;
+        setFeedbacks(feedbackList);
+  
+        if (feedbackList.length > 0) {
+          const total = feedbackList.reduce((sum, f) => sum + f.rating, 0);
+          const average = total / feedbackList.length;
+          setRecipe((prev) => ({
+            ...prev,
+            avgRating: average,
+            numReviews: feedbackList.length,
+          }));
+        }
       } catch (err) {
         console.error('Error fetching feedbacks:', err);
       }
@@ -68,6 +81,7 @@ const ClientRecipeDetail = () => {
       fetchFeedbacks();
     }
   }, [recipe, id]);
+  
   
 
   // Check if the recipe is already in favorites
@@ -268,6 +282,20 @@ const ClientRecipeDetail = () => {
                         sx={{ borderRadius: '10px', mb: 2, fontSize: '16px' }}
                       />
 
+                      {/* Rating and number of reviews */}
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                        <Rating
+                          name="read-only"
+                          value={Number(recipe.avgRating) || 0}
+                          precision={0.5}
+                          readOnly
+                          size="medium"
+                        />
+                        <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
+                          ({recipe.numReviews || 0} reviews)
+                        </Typography>
+                      </Box>
+
                       <Divider sx={{ my: 2 }} />
 
                       <Typography
@@ -279,12 +307,21 @@ const ClientRecipeDetail = () => {
                       </Typography>
                     </Grid>
                   </Box>
+
                 </Grid>
 
+              <Box sx={{ borderRadius:'10px', p:3, mt:5, bgcolor:'rgba(255, 255, 255, 0.62)', textAlign:'center'}}>
+                <Typography variant="h3" fontWeight="bold" color="primary.main" gutterBottom>
+                "Start Crafting Your Delicious Recipe!"
+                </Typography>
+                <Typography variant="h6" fontWeight="bold" color="primary.main" gutterBottom>
+                        Are You Ready With Ingredients ? Then Click 'Start'
+                </Typography>
+              </Box>
                 {/* Bottom Section: Ingredients and Instructions */}
                 <Grid container spacing={4} sx={{ mt: 4 }}>
                   {/* Ingredients Left */}
-                  <Box sx={{ width: { xs: '100%', md: '48%', xl: '50%' } }}>
+                  <Box sx={{ width: { xs: '100%', md: '47%', xl: '48%' } }}>
                     <Grid item xs={12} md={6}>
                       <Paper elevation={2} sx={{ width: 'auto', minHeight: 600, p: 3, borderRadius: 3 }}>
                         <Typography textAlign={'center'} variant="h5" fontWeight="bold" gutterBottom color="primary">
@@ -319,8 +356,11 @@ const ClientRecipeDetail = () => {
                 </Grid>
               </Paper>
 
+              <TopRatedRecipes />
+              <NewlyAddedRecipes />
               {/* Feedback Section */}
-              <Paper elevation={3} sx={{ mt: 4, p: 3, borderRadius: 3 }}>
+            <Box sx={{ justifyItems:'center' }}>
+              <Paper elevation={3} sx={{ mt: 4, p: 3, borderRadius: 3, width: { xs: '100%', md: '50%', xl: '50%' } }}>
                 <Typography variant="h5" fontWeight="bold" color="primary.main" gutterBottom>
                   Leave a Feedback
                 </Typography>
@@ -355,7 +395,6 @@ const ClientRecipeDetail = () => {
                 <Button variant="contained" onClick={handleFeedbackSubmit} sx={{ width: '100%' }}>
                   Submit Feedback
                 </Button>
-
                 {/* Display feedbacks */}
                 <Box sx={{ mt: 4 }}>
                   <Typography variant="h6" color="primary" fontWeight="bold">
@@ -374,6 +413,7 @@ const ClientRecipeDetail = () => {
                   ))}
                 </Box>
               </Paper>
+              </Box>
             </Box>
           </Box>
         </Fade>
