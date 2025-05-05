@@ -39,6 +39,8 @@ import AddIngredient from './pages/vendor/AddIngredient';
 import EditIngredient from './pages/vendor/EditIngredient';
 import ManageRecipes from './pages/admin/ManageRecipes';
 import ManageIngredients from './pages/admin/ManageIngredients';
+import ManageFeedbacks from './pages/admin/ManageFeedbacks';
+import RecipeDetail from './pages/admin/RecipeDetail';
 
 const App = () => {
   return (
@@ -62,6 +64,8 @@ const App = () => {
         <Route path="/admin/add-admin" element={<PrivateRoute allowedRoles={['admin']}><UserLayout><AddAdmin /></UserLayout></PrivateRoute>} />
         <Route path="/admin/manage-recipes" element={<PrivateRoute allowedRoles={['admin']}><UserLayout><ManageRecipes /></UserLayout></PrivateRoute>} />
         <Route path="/admin/manage-ingredients" element={<PrivateRoute allowedRoles={['admin']}><UserLayout><ManageIngredients /></UserLayout></PrivateRoute>} />
+        <Route path="/admin/manage-feedbacks" element={<PrivateRoute allowedRoles={['admin']}><UserLayout><ManageFeedbacks /></UserLayout></PrivateRoute>} />
+        <Route path="/recipe/:id" element={<PrivateRoute allowedRoles={['admin']}><UserLayout><RecipeDetail /></UserLayout></PrivateRoute>}/>
 
         {/* Client Routes */}
         <Route path="/client/dashboard" element={<UserLayout><ClientDashboard /></UserLayout>}/>

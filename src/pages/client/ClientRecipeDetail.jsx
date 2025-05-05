@@ -39,6 +39,15 @@ const ClientRecipeDetail = () => {
     rating: 0,
     message: '',
   });
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded = JSON.parse(atob(token.split('.')[1]));
+      setCurrentUser(decoded); // decoded should have user ID
+    }
+  }, []);
 
   // Function to fetch the recipe details
   useEffect(() => {
@@ -92,11 +101,11 @@ const ClientRecipeDetail = () => {
         const res = await axios.get(`http://localhost:5000/api/favorites/`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-
+    
         const foundFavorite = res.data.find(
-          (f) => f.recipe._id === recipe._id
+          (f) => f.recipe && f.recipe._id === recipe._id // Ensure recipe exists before accessing _id
         );
-
+    
         if (foundFavorite) {
           setIsFavorite(true);
           setFavoriteEntry(foundFavorite); // Ensure full favorite object with _id is stored
@@ -108,58 +117,67 @@ const ClientRecipeDetail = () => {
         console.error('Error checking favorite:', err);
       }
     };
-
+  
     if (recipe) {
       checkFavorite();
     }
-
-
-    
   }, [recipe]);
+  
 
   // Function to handle adding the recipe to favorites
   const handleAddToFavorites = async () => {
     const token = localStorage.getItem('token');
-
+  
     if (!token) {
       alert('You need to log in to add to favorites.');
       return;
     }
-
+  
+    if (!recipe || !recipe._id) {
+      console.error('Recipe is not defined or missing _id');
+      return;
+    }
+  
     try {
       const response = await axios.post(
         'http://localhost:5000/api/favorites/add',
         { recipeId: recipe._id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+  
       setIsFavorite(true);
       setFavoriteEntry(response.data);
-      toast.success('Recipe added to favorites!'); // Toast notification for success
+      toast.success('Recipe added to favorites!');
     } catch (err) {
       console.error('Failed to add to favorites:', err);
-      toast.error('Failed to add recipe to favorites.'); // Toast notification for failure
+      toast.error('Failed to add recipe to favorites.');
     }
   };
+  
 
   // Function to handle removing the recipe from favorites
   const handleRemoveFromFavorites = async () => {
     const token = localStorage.getItem('token');
-
+  
+    if (!favoriteEntry || !favoriteEntry._id) {
+      console.error('No favorite entry or missing _id');
+      return;
+    }
+  
     try {
-      if (!favoriteEntry?._id) return; // Ensure we have an ID
       await axios.delete(`http://localhost:5000/api/favorites/${favoriteEntry._id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
-
+  
       setIsFavorite(false);
       setFavoriteEntry(null);
-      toast.info('Recipe removed from favorites!'); // Toast notification for removal
+      toast.info('Recipe removed from favorites!');
     } catch (error) {
       console.error('Failed to remove from favorites:', error);
-      toast.error('Failed to remove recipe from favorites.'); // Toast notification for failure
+      toast.error('Failed to remove recipe from favorites.');
     }
   };
-
+  
   // Function to handle submitting feedback
   const handleFeedbackSubmit = async () => {
     const token = localStorage.getItem('token');
@@ -185,6 +203,19 @@ const ClientRecipeDetail = () => {
     }
   };
   
+  const handleDeleteFeedback = async (feedbackId) => {
+    const token = localStorage.getItem('token');
+    try {
+      await axios.delete(`http://localhost:5000/api/feedback/${feedbackId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setFeedbacks((prev) => prev.filter((f) => f._id !== feedbackId));
+      toast.success('Feedback deleted');
+    } catch (err) {
+      console.error('Error deleting feedback:', err);
+      toast.error('Failed to delete feedback');
+    }
+  };
 
   // Loader while fetching recipe
   if (loading)
@@ -359,61 +390,77 @@ const ClientRecipeDetail = () => {
               <TopRatedRecipes />
               <NewlyAddedRecipes />
               {/* Feedback Section */}
-            <Box sx={{ justifyItems:'center' }}>
-              <Paper elevation={3} sx={{ mt: 4, p: 3, borderRadius: 3, width: { xs: '100%', md: '50%', xl: '50%' } }}>
-                <Typography variant="h5" fontWeight="bold" color="primary.main" gutterBottom>
-                  Leave a Feedback
-                </Typography>
+              <Box sx={{ justifyItems:'center' }}>
+  <Paper elevation={3} sx={{ mt: 4, p: 3, borderRadius: 3, width: { xs: '100%', md: '50%', xl: '50%' } }}>
+    <Typography variant="h5" fontWeight="bold" color="primary.main" gutterBottom>
+      Leave a Feedback
+    </Typography>
 
-                <TextField
-                  label="Your Name"
-                  variant="outlined"
-                  fullWidth
-                  value={newFeedback.name}
-                  onChange={(e) => setNewFeedback({ ...newFeedback, name: e.target.value })}
-                  sx={{ mb: 2 }}
-                />
+    <TextField
+      label="Your Name"
+      variant="outlined"
+      fullWidth
+      value={newFeedback.name}
+      onChange={(e) => setNewFeedback({ ...newFeedback, name: e.target.value })}
+      sx={{ mb: 2 }}
+    />
 
-                <Rating
-                  name="rating"
-                  value={newFeedback.rating}
-                  onChange={(event, newValue) => setNewFeedback({ ...newFeedback, rating: newValue })}
-                  sx={{ mb: 2 }}
-                />
+    <Rating
+      name="rating"
+      value={newFeedback.rating}
+      onChange={(event, newValue) => setNewFeedback({ ...newFeedback, rating: newValue })}
+      sx={{ mb: 2 }}
+    />
 
-                <TextField
-                  label="Your Message"
-                  variant="outlined"
-                  fullWidth
-                  multiline
-                  rows={4}
-                  value={newFeedback.message}
-                  onChange={(e) => setNewFeedback({ ...newFeedback, message: e.target.value })}
-                  sx={{ mb: 2 }}
-                />
+    <TextField
+      label="Your Message"
+      variant="outlined"
+      fullWidth
+      multiline
+      rows={4}
+      value={newFeedback.message}
+      onChange={(e) => setNewFeedback({ ...newFeedback, message: e.target.value })}
+      sx={{ mb: 2 }}
+    />
 
-                <Button variant="contained" onClick={handleFeedbackSubmit} sx={{ width: '100%' }}>
-                  Submit Feedback
-                </Button>
-                {/* Display feedbacks */}
-                <Box sx={{ mt: 4 }}>
-                  <Typography variant="h6" color="primary" fontWeight="bold">
-                    Feedbacks:
-                  </Typography>
-                  {feedbacks.map((feedback, index) => (
-                    <Box key={index} sx={{ mt: 2, mb: 2 }}>
-                      <Typography variant="body1" fontWeight="bold">
-                        {feedback.name}
-                      </Typography>
-                      <Rating value={feedback.rating} readOnly />
-                      <Typography variant="body2" sx={{ mt: 1 }}>
-                        {feedback.message}
-                      </Typography>
-                    </Box>
-                  ))}
-                </Box>
-              </Paper>
-              </Box>
+    <Button variant="contained" onClick={handleFeedbackSubmit} sx={{ width: '100%' }}>
+      Submit Feedback
+    </Button>
+
+    {/* Display feedbacks */}
+    <Box sx={{ mt: 4 }}>
+  <Typography variant="h6" color="primary" fontWeight="bold">
+    Feedbacks:
+  </Typography>
+  {feedbacks.map((feedback, index) => (
+    <Box key={index} sx={{ mt: 2, mb: 2, position: 'relative' }}>
+      <Typography variant="body1" fontWeight="bold">
+        {feedback.name}
+      </Typography>
+      <Rating value={feedback.rating} readOnly />
+      <Typography variant="body2" sx={{ mt: 1 }}>
+        {feedback.message}
+      </Typography>
+
+      {/* Show delete button if current user is the feedback owner */}
+      {currentUser && feedback.userId === currentUser.id && (
+        <Button
+          variant="outlined"
+          color="error"
+          size="small"
+          onClick={() => handleDeleteFeedback(feedback._id)}
+          sx={{ mt: 1 }}
+        >
+          Delete
+        </Button>
+      )}
+    </Box>
+  ))}
+</Box>
+
+  </Paper>
+</Box>
+
             </Box>
           </Box>
         </Fade>

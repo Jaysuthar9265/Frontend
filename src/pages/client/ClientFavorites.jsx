@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import axios from 'axios';
-import { toast } from 'react-toastify'; // Import toast
+import { toast } from 'react-toastify';
 
 const ClientFavorites = () => {
   const [favorites, setFavorites] = useState([]);
@@ -33,7 +33,7 @@ const ClientFavorites = () => {
       });
       setFavorites(res.data);
     } catch (err) {
-      toast.error('Error fetching favorites'); // Toast error message
+      toast.error('Error fetching favorites');
       console.error('Error fetching favorites:', err);
     } finally {
       setLoading(false);
@@ -47,9 +47,9 @@ const ClientFavorites = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setFavorites((prev) => prev.filter((fav) => fav._id !== favoriteId));
-      toast.success('Recipe removed from favorites'); // Toast success message
+      toast.success('Recipe removed from favorites');
     } catch (err) {
-      toast.error('Error removing favorite'); // Toast error message
+      toast.error('Error removing favorite');
       console.error('Error removing favorite:', err);
     }
   };
@@ -85,35 +85,62 @@ const ClientFavorites = () => {
           </Typography>
         ) : (
           <Grid container spacing={3}>
-            {favorites.map((favorite) => (
-              <Grid item xs={12} sm={6} md={4} key={favorite._id}>
-                <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={favorite.recipe.image || '/default-recipe.jpg'}
-                    alt={favorite.recipe.title}
-                  />
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                      {favorite.recipe.title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {favorite.recipe.description}
-                    </Typography>
-                  </CardContent>
-                  <CardActions disableSpacing>
-                    <IconButton
-                      color="error"
-                      onClick={() => handleRemoveFavorite(favorite._id)}
-                      aria-label="remove from favorites"
-                    >
-                      <FavoriteIcon />
-                    </IconButton>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
+            {favorites.map((favorite) => {
+              const recipe = favorite.recipe;
+              if (!recipe) {
+                return (
+                  <Grid item xs={12} sm={6} md={4} key={favorite._id}>
+                    <Card sx={{ borderRadius: 3, boxShadow: 3, p: 2 }}>
+                      <Typography variant="h6" color="error">
+                        Recipe not available
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        This recipe may have been deleted.
+                      </Typography>
+                      <CardActions>
+                        <IconButton
+                          color="error"
+                          onClick={() => handleRemoveFavorite(favorite._id)}
+                          aria-label="remove invalid favorite"
+                        >
+                          <FavoriteIcon />
+                        </IconButton>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                );
+              }
+
+              return (
+                <Grid item xs={12} sm={6} md={4} key={favorite._id}>
+                  <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
+                    <CardMedia
+                      component="img"
+                      height="200"
+                      image={recipe.image || '/default-recipe.jpg'}
+                      alt={recipe.title || 'Recipe Image'}
+                    />
+                    <CardContent>
+                      <Typography variant="h6" gutterBottom>
+                        {recipe.title}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" noWrap>
+                        {recipe.description || 'No description available.'}
+                      </Typography>
+                    </CardContent>
+                    <CardActions disableSpacing>
+                      <IconButton
+                        color="error"
+                        onClick={() => handleRemoveFavorite(favorite._id)}
+                        aria-label="remove from favorites"
+                      >
+                        <FavoriteIcon />
+                      </IconButton>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              );
+            })}
           </Grid>
         )}
       </Container>
